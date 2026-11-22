@@ -1,0 +1,47 @@
+/* -------------------------------------------------- */
+/* ✅ ALWAYS KEEP @import AT THE VERY TOP (No CSS above) */
+/* -------------------------------------------------- */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap');
+
+/* -------------------------------------------------- */
+/* ✅ Tailwind should be imported AFTER fonts */
+/* -------------------------------------------------- */
+@import "tailwindcss";
+
+/* -------------------------------------------------- */
+/* ✅ Your custom CSS comes AFTER all imports */
+/* -------------------------------------------------- */
+
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+/* Custom animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card { animation: fadeIn 0.5s ease-out forwards; }

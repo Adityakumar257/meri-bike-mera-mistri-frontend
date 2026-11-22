@@ -1,0 +1,99 @@
+:root {
+  --mbmm-navy: #07346f;
+  --mbmm-blue: #0b4b96;
+  --mbmm-blue-light: #1267b7;
+  --mbmm-red: #e52e2b;
+  --mbmm-orange: #f07819;
+  --mbmm-page: #f3f6fa;
+  --mbmm-surface: #ffffff;
+  --mbmm-text: #17243b;
+  --mbmm-muted: #617087;
+  --mbmm-border: #dce5ef;
+  --mbmm-radius: 12px;
+  --mbmm-shadow: 0 8px 24px rgba(8, 36, 82, 0.08);
+}
+
+.mbmm-admin {
+  color: var(--mbmm-text);
+  background: var(--mbmm-page);
+}
+
+.mbmm-admin[data-theme="light"] > aside {
+  color: #fff;
+  background: var(--mbmm-navy);
+  border-color: var(--mbmm-navy);
+}
+
+.mbmm-admin[data-theme="light"] > aside .text-gray-800,
+.mbmm-admin[data-theme="light"] > aside .text-gray-700,
+.mbmm-admin[data-theme="light"] > aside .text-gray-600 {
+  color: #eaf1fa;
+}
+
+.mbmm-admin[data-theme="light"] > aside .text-gray-500,
+.mbmm-admin[data-theme="light"] > aside .text-gray-400 {
+  color: #becde0;
+}
+
+.mbmm-admin[data-theme="light"] > aside button[class*="bg-blue-50"],
+.mbmm-admin[data-theme="light"] > aside button[class*="bg-green-50"],
+.mbmm-admin[data-theme="light"] > aside button[class*="bg-purple-50"],
+.mbmm-admin[data-theme="light"] > aside button[class*="bg-orange-50"],
+.mbmm-admin[data-theme="light"] > aside button[class*="bg-pink-50"],
+.mbmm-admin[data-theme="light"] > aside button[class*="bg-indigo-50"],
+.mbmm-admin[data-theme="light"] > aside button[class*="bg-red-50"],
+.mbmm-admin[data-theme="light"] > aside button[class*="bg-cyan-50"],
+.mbmm-admin[data-theme="light"] > aside button[class*="bg-teal-50"],
+.mbmm-admin[data-theme="light"] > aside button[class*="bg-yellow-50"] {
+  color: #fff;
+  background: var(--mbmm-blue);
+}
+
+.mbmm-admin[data-theme="light"] > aside button:not([class*="bg-blue-50"]):not([class*="bg-green-50"]):not([class*="bg-purple-50"]):not([class*="bg-orange-50"]):not([class*="bg-pink-50"]):not([class*="bg-indigo-50"]):not([class*="bg-red-50"]):not([class*="bg-cyan-50"]):not([class*="bg-teal-50"]):not([class*="bg-yellow-50"]):hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.mbmm-admin[data-theme="light"] > aside button.text-red-600 {
+  color: #ffb6b2;
+}
+
+.mbmm-admin[data-theme="light"] > aside button.text-red-600:hover {
+  background: rgba(229, 46, 43, 0.18);
+}
+
+.mbmm-admin[data-theme="light"] > div > header {
+  color: var(--mbmm-text);
+  background: var(--mbmm-surface);
+  border-color: var(--mbmm-border);
+}
+
+.mbmm-admin button.bg-blue-600,
+.mbmm-admin button.bg-indigo-600,
+.mbmm-admin button.bg-purple-600 {
+  background-color: var(--mbmm-blue);
+}
+
+.mbmm-admin button.bg-blue-600:hover,
+.mbmm-admin button.bg-indigo-600:hover,
+.mbmm-admin button.bg-purple-600:hover {
+  background-color: var(--mbmm-navy);
+}
+
+.mbmm-admin input:focus,
+.mbmm-admin select:focus,
+.mbmm-admin textarea:focus {
+  border-color: var(--mbmm-blue);
+  outline-color: var(--mbmm-blue);
+}
+
+.mbmm-admin [class*="rounded-xl"][class*="bg-white"] {
+  border-color: var(--mbmm-border);
+  box-shadow: var(--mbmm-shadow);
+}
+
+@media (max-width: 767px) {
+  .mbmm-admin > div {
+    min-width: 0;
+  }
+}

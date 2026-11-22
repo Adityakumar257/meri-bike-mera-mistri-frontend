@@ -1,0 +1,835 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Magna Tiles Clear Colors 100 Piece Set",
+      "category": "Construction",
+      "brand": "Magna-Tiles",
+      "description": "Magna Tiles Clear Colors 100 Piece Set",
+      "originalPrice": 8999.00,
+      "currentPrice": 6499.00,
+      "discount": 28,
+      "inStock": true,
+      "image": "https://example.com/products/magna-tiles-100.jpg",
+      "tags": ["Construction", "Magna-Tiles", "Educational"],
+      "variants": []
+    },
+    {
+      "id": 2,
+      "name": "Magna Tiles Clear Colors 32 Piece Set",
+      "category": "Construction",
+      "brand": "Magna-Tiles",
+      "description": "Magna Tiles Clear Colors 32 Piece Set",
+      "originalPrice": 3999.00,
+      "currentPrice": 2999.00,
+      "discount": 25,
+      "inStock": true,
+      "image": "https://example.com/products/magna-tiles-32.jpg",
+      "tags": ["Construction", "Magna-Tiles", "Educational"],
+      "variants": []
+    },
+    {
+      "id": 3,
+      "name": "Jar Melo Baby Roo Silky Washable Crayon",
+      "category": "Arts & Crafts",
+      "brand": "Jarmelo",
+      "description": "Jar Melo Baby Roo Silky Washable Crayon",
+      "originalPrice": 2599.00,
+      "currentPrice": 999.00,
+      "discount": 62,
+      "inStock": true,
+      "image": "https://example.com/products/jarmelo-crayon.jpg",
+      "tags": ["Arts & Crafts", "Washable", "Creative"],
+      "variants": [
+        {
+          "name": "12 Colors",
+          "price": 999.00
+        },
+        {
+          "name": "24 Colors",
+          "price": 2599.00
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Jar Melo Dot Painting",
+      "category": "Arts & Crafts",
+      "brand": "Jarmelo",
+      "description": "Jar Melo Dot Painting",
+      "originalPrice": 2599.00,
+      "currentPrice": 1299.00,
+      "discount": 23,
+      "inStock": true,
+      "image": "https://example.com/products/jarmelo-dot-painting.jpg",
+      "tags": ["Arts & Crafts", "Painting", "Creative"],
+      "variants": [
+        {
+          "name": "Small Set",
+          "price": 1299.00
+        },
+        {
+          "name": "Large Set",
+          "price": 1999.00
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "The Toycra Gift Card",
+      "category": "Gift Cards",
+      "brand": "Toycra",
+      "description": "The Toycra Gift Card",
+      "originalPrice": 5000.00,
+      "currentPrice": 500.00,
+      "discount": 0,
+      "inStock": true,
+      "image": "https://example.com/products/gift-card.jpg",
+      "tags": ["Gift", "Voucher", "Present"],
+      "variants": [
+        {
+          "name": "₹500",
+          "price": 500.00
+        },
+        {
+          "name": "₹1000",
+          "price": 1000.00
+        },
+        {
+          "name": "₹5000",
+          "price": 5000.00
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Open Ended Stack It Up - 28 pcs Balancing Stones",
+      "category": "Motor Skills",
+      "brand": "Open Ended",
+      "description": "Open Ended Stack It Up - 28 pcs Balancing Stones",
+      "originalPrice": 1799.00,
+      "currentPrice": 1399.00,
+      "discount": 22,
+      "inStock": true,
+      "image": "https://example.com/products/balancing-stones.jpg",
+      "tags": ["Motor Skills", "Stacking", "Educational"],
+      "variants": [
+        {
+          "name": "Small Set",
+          "price": 1399.00
+        },
+        {
+          "name": "Large Set",
+          "price": 1599.00
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Jar Melo Jumbo Sidewalk Chalk - 24 Colors Kit with 2 Holder",
+      "category": "Arts & Crafts",
+      "brand": "Jarmelo",
+      "description": "Jar Melo Jumbo Sidewalk Chalk - 24 Colors Kit with 2 Holder",
+      "originalPrice": 1199.00,
+      "currentPrice": 1199.00,
+      "discount": 0,
+      "inStock": true,
+      "image": "https://example.com/products/sidewalk-chalk.jpg",
+      "tags": ["Arts & Crafts", "Outdoor", "Chalk"],
+      "variants": []
+    },
+    {
+      "id": 8,
+      "name": "Jar Melo Washable Finger Paint Colors Set",
+      "category": "Arts & Crafts",
+      "brand": "Jarmelo",
+      "description": "Jar Melo Washable Finger Paint Colors Set",
+      "originalPrice": 1499.00,
+      "currentPrice": 999.00,
+      "discount": 33,
+      "inStock": true,
+      "image": "https://example.com/products/finger-paint.jpg",
+      "tags": ["Arts & Crafts", "Washable", "Painting"],
+      "variants": [
+        {
+          "name": "6 Colors",
+          "price": 999.00
+        },
+        {
+          "name": "12 Colors",
+          "price": 1499.00
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Jar Melo Finger Painting Stamp Fun Book",
+      "category": "Arts & Crafts",
+      "brand": "Jarmelo",
+      "description": "Jar Melo Finger Painting Stamp Fun Book",
+      "originalPrice": 899.00,
+      "currentPrice": 899.00,
+      "discount": 0,
+      "inStock": true,
+      "image": "https://example.com/products/finger-painting-book.jpg",
+      "tags": ["Arts & Crafts", "Book", "Stamp"],
+      "variants": []
+    },
+    {
+      "id": 10,
+      "name": "Jar Melo Washable Chalks Set of 15 Colors",
+      "category": "Arts & Crafts",
+      "brand": "Jarmelo",
+      "description": "Jar Melo Washable Chalks Set of 15 Colors",
+      "originalPrice": 799.00,
+      "currentPrice": 799.00,
+      "discount": 0,
+      "inStock": true,
+      "image": "https://example.com/products/washable-chalks.jpg",
+      "tags": ["Arts & Crafts", "Washable", "Chalk"],
+      "variants": []
+    },
+    {
+      "id": 11,
+      "name": "Bumkins Silicone Grip Dish",
+      "category": "Mealtime Essentials",
+      "brand": "Bumkins",
+      "description": "Bumkins Silicone Grip Dish",
+      "originalPrice": 1999.00,
+      "currentPrice": 799.00,
+      "discount": 60,
+      "inStock": true,
+      "image": "https://example.com/products/silicone-dish.jpg",
+      "tags": ["Mealtime", "Baby", "Silicone"],
+      "variants": []
+    },
+    {
+      "id": 12,
+      "name": "Bumkins Silicone First Feeding Set",
+      "category": "Mealtime Essentials",
+      "brand": "Bumkins",
+      "description": "Bumkins Silicone First Feeding Set",
+      "originalPrice": 1799.00,
+      "currentPrice": 799.00,
+      "discount": 56,
+      "inStock": true,
+      "image": "https://example.com/products/feeding-set.jpg",
+      "tags": ["Mealtime", "Baby", "Feeding"],
+      "variants": []
+    },
+    {
+      "id": 13,
+      "name": "Jar Melo Baby Roo Washable Markers",
+      "category": "Arts & Crafts",
+      "brand": "Jarmelo",
+      "description": "Jar Melo Baby Roo Washable Markers",
+      "originalPrice": 1899.00,
+      "currentPrice": 799.00,
+      "discount": 58,
+      "inStock": true,
+      "image": "https://example.com/products/washable-markers.jpg",
+      "tags": ["Arts & Crafts", "Washable", "Markers"],
+      "variants": []
+    },
+    {
+      "id": 14,
+      "name": "Fat Brain Toys Splitting Image",
+      "category": "Kids Games",
+      "brand": "Fat Brain Toys",
+      "description": "Fat Brain Toys Splitting Image",
+      "originalPrice": 1099.00,
+      "currentPrice": 499.00,
+      "discount": 55,
+      "inStock": true,
+      "image": "https://example.com/products/splitting-image.jpg",
+      "tags": ["Games", "Puzzle", "Brain"],
+      "variants": []
+    },
+    {
+      "id": 15,
+      "name": "National Geographic Tube",
+      "category": "Action & Toy Figures",
+      "brand": "National Geographic",
+      "description": "National Geographic Tube",
+      "originalPrice": 599.00,
+      "currentPrice": 599.00,
+      "discount": 0,
+      "inStock": false,
+      "stockStatus": "Low stock",
+      "image": "https://example.com/products/ng-tube.jpg",
+      "tags": ["Figures", "Educational", "Animals"],
+      "variants": []
+    },
+    {
+      "id": 16,
+      "name": "Jar Melo Marbling Paint Kit",
+      "category": "Arts & Crafts",
+      "brand": "Jarmelo",
+      "description": "Jar Melo Marbling Paint Kit",
+      "originalPrice": 1999.00,
+      "currentPrice": 1299.00,
+      "discount": 35,
+      "inStock": true,
+      "image": "https://example.com/products/marbling-paint.jpg",
+      "tags": ["Arts & Crafts", "Painting", "Creative"],
+      "variants": [
+        {
+          "name": "Basic Kit",
+          "price": 1299.00
+        },
+        {
+          "name": "Deluxe Kit",
+          "price": 1999.00
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "name": "LEGO 10280 Icons Flower Bouquet",
+      "category": "Construction",
+      "brand": "LEGO",
+      "description": "LEGO 10280 Icons Flower Bouquet",
+      "originalPrice": 5499.00,
+      "currentPrice": 3499.00,
+      "discount": 36,
+      "inStock": true,
+      "image": "https://example.com/products/lego-flowers.jpg",
+      "tags": ["LEGO", "Flowers", "Decoration"],
+      "variants": []
+    },
+    {
+      "id": 18,
+      "name": "Hot Wheels Diecast Cars - Pack of 5",
+      "category": "Vehicles",
+      "brand": "Hot Wheels",
+      "description": "Hot Wheels Diecast Cars - Pack of 5",
+      "originalPrice": 899.00,
+      "currentPrice": 899.00,
+      "discount": 0,
+      "inStock": false,
+      "stockStatus": "Low stock",
+      "image": "https://example.com/products/hot-wheels.jpg",
+      "tags": ["Cars", "Vehicles", "Diecast"],
+      "variants": []
+    },
+    {
+      "id": 19,
+      "name": "Open Ended Toddler's First 6 In 1 Puzzle - Animals (6 puzzles, 27 pcs)",
+      "category": "Puzzles",
+      "brand": "Open Ended",
+      "description": "Open Ended Toddler's First 6 In 1 Puzzle - Animals (6 puzzles, 27 pcs)",
+      "originalPrice": 1599.00,
+      "currentPrice": 1499.00,
+      "discount": 6,
+      "inStock": true,
+      "image": "https://example.com/products/animal-puzzle.jpg",
+      "tags": ["Puzzle", "Animals", "Educational"],
+      "variants": []
+    },
+    {
+      "id": 20,
+      "name": "Open Ended Wooden Road Tracks",
+      "category": "Vehicles",
+      "brand": "Open Ended",
+      "description": "Open Ended Wooden Road Tracks",
+      "originalPrice": 2499.00,
+      "currentPrice": 999.00,
+      "discount": 60,
+      "inStock": true,
+      "image": "https://example.com/products/road-tracks.jpg",
+      "tags": ["Wooden", "Vehicles", "Track"],
+      "variants": [
+        {
+          "name": "Small Set",
+          "price": 999.00
+        },
+        {
+          "name": "Large Set",
+          "price": 1299.00
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "name": "Lego 76424 Harry Potter Flying Ford Anglia (165 Pieces)",
+      "category": "Construction",
+      "brand": "LEGO",
+      "description": "Lego 76424 Harry Potter Flying Ford Anglia (165 Pieces)",
+      "originalPrice": 1499.00,
+      "currentPrice": 1299.00,
+      "discount": 13,
+      "inStock": true,
+      "image": "https://example.com/products/harry-potter-car.jpg",
+      "tags": ["LEGO", "Harry Potter", "Vehicle"],
+      "variants": []
+    },
+    {
+      "id": 22,
+      "name": "Open Ended Wooden Toolkit Suitcase",
+      "category": "Pretend Play",
+      "brand": "Open Ended",
+      "description": "Open Ended Wooden Toolkit Suitcase",
+      "originalPrice": 1999.00,
+      "currentPrice": 1799.00,
+      "discount": 10,
+      "inStock": true,
+      "image": "https://example.com/products/toolkit.jpg",
+      "tags": ["Wooden", "Tools", "Pretend Play"],
+      "variants": []
+    },
+    {
+      "id": 23,
+      "name": "Bumkins Junior Bib",
+      "category": "Mealtime Essentials",
+      "brand": "Bumkins",
+      "description": "Bumkins Junior Bib",
+      "originalPrice": 999.00,
+      "currentPrice": 499.00,
+      "discount": 50,
+      "inStock": true,
+      "image": "https://example.com/products/junior-bib.jpg",
+      "tags": ["Baby", "Mealtime", "Bib"],
+      "variants": []
+    },
+    {
+      "id": 24,
+      "name": "Popular Playthings Monkey Multiplier",
+      "category": "Kids Games",
+      "brand": "Popular Playthings",
+      "description": "Popular Playthings Monkey Multiplier",
+      "originalPrice": 699.00,
+      "currentPrice": 349.00,
+      "discount": 50,
+      "inStock": true,
+      "image": "https://example.com/products/monkey-multiplier.jpg",
+      "tags": ["Games", "Math", "Educational"],
+      "variants": []
+    },
+    {
+      "id": 25,
+      "name": "Open Ended 115 Pieces Wooden City Building Blocks",
+      "category": "Construction",
+      "brand": "Open Ended",
+      "description": "Open Ended 115 Pieces Wooden City Building Blocks",
+      "originalPrice": 2799.00,
+      "currentPrice": 2099.00,
+      "discount": 25,
+      "inStock": true,
+      "image": "https://example.com/products/city-blocks.jpg",
+      "tags": ["Wooden", "Blocks", "Construction"],
+      "variants": []
+    },
+    {
+      "id": 26,
+      "name": "Jar Melo Magic Water Doodle Mat",
+      "category": "Arts & Crafts",
+      "brand": "Jarmelo",
+      "description": "Jar Melo Magic Water Doodle Mat",
+      "originalPrice": 1999.00,
+      "currentPrice": 1999.00,
+      "discount": 0,
+      "inStock": true,
+      "image": "https://example.com/products/water-doodle.jpg",
+      "tags": ["Arts & Crafts", "Water", "Doodle"],
+      "variants": []
+    },
+    {
+      "id": 27,
+      "name": "Avenir Small Nail Stickers",
+      "category": "Arts & Crafts",
+      "brand": "Avenir",
+      "description": "Avenir Small Nail Stickers",
+      "originalPrice": 199.00,
+      "currentPrice": 149.00,
+      "discount": 25,
+      "inStock": true,
+      "image": "https://example.com/products/nail-stickers.jpg",
+      "tags": ["Nail Art", "Stickers", "Beauty"],
+      "variants": []
+    },
+    {
+      "id": 28,
+      "name": "LEGO 11013 Classic Creative Transparent Bricks (500 pcs)",
+      "category": "Construction",
+      "brand": "LEGO",
+      "description": "LEGO 11013 Classic Creative Transparent Bricks (500 pcs)",
+      "originalPrice": 4499.00,
+      "currentPrice": 4099.00,
+      "discount": 9,
+      "inStock": true,
+      "image": "https://example.com/products/lego-transparent.jpg",
+      "tags": ["LEGO", "Transparent", "Bricks"],
+      "variants": []
+    },
+    {
+      "id": 29,
+      "name": "Lego 30670 Recruitment Bags Santa's Sleigh Ride (73 Pieces)",
+      "category": "Construction",
+      "brand": "LEGO",
+      "description": "Lego 30670 Recruitment Bags Santa's Sleigh Ride (73 Pieces)",
+      "originalPrice": 449.00,
+      "currentPrice": 449.00,
+      "discount": 0,
+      "inStock": true,
+      "image": "https://example.com/products/lego-santa.jpg",
+      "tags": ["LEGO", "Santa", "Christmas"],
+      "variants": []
+    },
+    {
+      "id": 30,
+      "name": "Bumkins Sleeved Bib",
+      "category": "Mealtime Essentials",
+      "brand": "Bumkins",
+      "description": "Bumkins Sleeved Bib",
+      "originalPrice": 1599.00,
+      "currentPrice": 699.00,
+      "discount": 56,
+      "inStock": true,
+      "image": "https://example.com/products/sleeved-bib.jpg",
+      "tags": ["Baby", "Mealtime", "Full Sleeves"],
+      "variants": []
+    },
+    {
+      "id": 31,
+      "name": "Kinderkraft Yummy Highchair",
+      "category": "High Chairs",
+      "brand": "Kinderkraft",
+      "description": "Kinderkraft Yummy Highchair",
+      "originalPrice": 12999.00,
+      "currentPrice": 6499.00,
+      "discount": 50,
+      "inStock": true,
+      "image": "https://example.com/products/highchair.jpg",
+      "tags": ["Furniture", "Baby", "Highchair"],
+      "variants": []
+    },
+    {
+      "id": 32,
+      "name": "Bumkins Silicone Starter Cup",
+      "category": "Mealtime Essentials",
+      "brand": "Bumkins",
+      "description": "Bumkins Silicone Starter Cup",
+      "originalPrice": 1099.00,
+      "currentPrice": 499.00,
+      "discount": 55,
+      "inStock": false,
+      "stockStatus": "Low stock",
+      "image": "https://example.com/products/starter-cup.jpg",
+      "tags": ["Baby", "Sippy Cup", "Mealtime"],
+      "variants": []
+    },
+    {
+      "id": 33,
+      "name": "Bumkins SuperBib 3 Pack",
+      "category": "Mealtime Essentials",
+      "brand": "Bumkins",
+      "description": "Bumkins SuperBib 3 Pack",
+      "originalPrice": 1999.00,
+      "currentPrice": 799.00,
+      "discount": 60,
+      "inStock": true,
+      "image": "https://example.com/products/superbib-pack.jpg",
+      "tags": ["Baby", "Bib", "3 Pack"],
+      "variants": []
+    },
+    {
+      "id": 34,
+      "name": "PepPlay My First Touch & Feel Puzzles",
+      "category": "Puzzles",
+      "brand": "PepPlay",
+      "description": "PepPlay My First Touch & Feel Puzzles",
+      "originalPrice": 599.00,
+      "currentPrice": 549.00,
+      "discount": 8,
+      "inStock": false,
+      "stockStatus": "Low stock",
+      "image": "https://example.com/products/touch-puzzle.jpg",
+      "tags": ["Puzzle", "Touch", "Sensory"],
+      "variants": []
+    },
+    {
+      "id": 35,
+      "name": "LEGO 43230 Disney Walt Disney Tribute Camera",
+      "category": "Construction",
+      "brand": "LEGO",
+      "description": "LEGO 43230 Disney Walt Disney Tribute Camera",
+      "originalPrice": 9999.00,
+      "currentPrice": 9999.00,
+      "discount": 0,
+      "inStock": true,
+      "image": "https://example.com/products/lego-camera.jpg",
+      "tags": ["LEGO", "Disney", "Camera"],
+      "variants": []
+    },
+    {
+      "id": 36,
+      "name": "LEGO 10311 Icons Orchid",
+      "category": "Construction",
+      "brand": "LEGO",
+      "description": "LEGO 10311 Icons Orchid",
+      "originalPrice": 6999.00,
+      "currentPrice": 4499.00,
+      "discount": 36,
+      "inStock": true,
+      "image": "https://example.com/products/lego-orchid.jpg",
+      "tags": ["LEGO", "Flowers", "Orchid"],
+      "variants": []
+    },
+    {
+      "id": 37,
+      "name": "Open Ended Wooden Cutting Set - Fruits & Veggies",
+      "category": "Pretend Play",
+      "brand": "Open Ended",
+      "description": "Open Ended Wooden Cutting Set - Fruits & Veggies",
+      "originalPrice": 2499.00,
+      "currentPrice": 1999.00,
+      "discount": 20,
+      "inStock": true,
+      "image": "https://example.com/products/cutting-set.jpg",
+      "tags": ["Wooden", "Kitchen", "Pretend Play"],
+      "variants": []
+    },
+    {
+      "id": 38,
+      "name": "LEGO City 60313 Space Ride Amusement Truck",
+      "category": "Construction",
+      "brand": "LEGO",
+      "description": "LEGO City 60313 Space Ride Amusement Truck",
+      "originalPrice": 4999.00,
+      "currentPrice": 4999.00,
+      "discount": 0,
+      "inStock": false,
+      "stockStatus": "Low stock",
+      "image": "https://example.com/products/lego-truck.jpg",
+      "tags": ["LEGO", "Space", "Truck"],
+      "variants": []
+    },
+    {
+      "id": 39,
+      "name": "Kinderkraft Luno Shapes Foam Puzzle Mat",
+      "category": "Mats, Gym & Activity",
+      "brand": "Kinderkraft",
+      "description": "Kinderkraft Luno Shapes Foam Puzzle Mat",
+      "originalPrice": 5999.00,
+      "currentPrice": 2499.00,
+      "discount": 58,
+      "inStock": true,
+      "image": "https://example.com/products/foam-mat.jpg",
+      "tags": ["Mat", "Foam", "Play Area"],
+      "variants": []
+    },
+    {
+      "id": 40,
+      "name": "LEGO 10281 Icons Bonsai Tree",
+      "category": "Construction",
+      "brand": "LEGO",
+      "description": "LEGO 10281 Icons Bonsai Tree",
+      "originalPrice": 5449.00,
+      "currentPrice": 3899.00,
+      "discount": 28,
+      "inStock": true,
+      "image": "https://example.com/products/lego-bonsai.jpg",
+      "tags": ["LEGO", "Bonsai", "Decoration"],
+      "variants": []
+    },
+    {
+      "id": 41,
+      "name": "LEGO 10696 Classic Medium Creative Brick Box (484 pcs)",
+      "category": "Construction",
+      "brand": "LEGO",
+      "description": "LEGO 10696 Classic Medium Creative Brick Box (484 pcs)",
+      "originalPrice": 3499.00,
+      "currentPrice": 3499.00,
+      "discount": 0,
+      "inStock": true,
+      "image": "https://example.com/products/lego-brick-box.jpg",
+      "tags": ["LEGO", "Classic", "Bricks"],
+      "variants": []
+    },
+    {
+      "id": 42,
+      "name": "Lego 10329 Icons Tiny Plants",
+      "category": "Construction",
+      "brand": "LEGO",
+      "description": "Lego 10329 Icons Tiny Plants",
+      "originalPrice": 5999.00,
+      "currentPrice": 4499.00,
+      "discount": 25,
+      "inStock": true,
+      "image": "https://example.com/products/lego-plants.jpg",
+      "tags": ["LEGO", "Plants", "Miniature"],
+      "variants": []
+    },
+    {
+      "id": 43,
+      "name": "LEGO 77243 Speed Champions Oracle Red Bull Racing RB20 F1 Race Car",
+      "category": "Construction",
+      "brand": "LEGO",
+      "description": "LEGO 77243 Speed Champions Oracle Red Bull Racing RB20 F1 Race Car (251 Pieces)",
+      "originalPrice": 2999.00,
+      "currentPrice": 2749.00,
+      "discount": 8,
+      "inStock": true,
+      "image": "https://example.com/products/lego-f1.jpg",
+      "tags": ["LEGO", "F1", "Racing"],
+      "variants": []
+    },
+    {
+      "id": 44,
+      "name": "Doodle Hog Dot Markers",
+      "category": "Arts & Crafts",
+      "brand": "Doodle Hog",
+      "description": "Doodle Hog Dot Markers",
+      "originalPrice": 1799.00,
+      "currentPrice": 899.00,
+      "discount": 50,
+      "inStock": false,
+      "stockStatus": "Low stock",
+      "image": "https://example.com/products/dot-markers.jpg",
+      "tags": ["Markers", "Arts & Crafts", "Dot"],
+      "variants": []
+    },
+    {
+      "id": 45,
+      "name": "Open Ended Bendimals - Flexible Wooden Animals",
+      "category": "Vehicles",
+      "brand": "Open Ended",
+      "description": "Open Ended Bendimals - Flexible Wooden Animals (Each Sold Separately)",
+      "originalPrice": 5100.00,
+      "currentPrice": 399.00,
+      "discount": 6,
+      "inStock": true,
+      "image": "https://example.com/products/bendimals.jpg",
+      "tags": ["Wooden", "Animals", "Flexible"],
+      "variants": [
+        {
+          "name": "Single Animal",
+          "price": 399.00
+        },
+        {
+          "name": "Full Set",
+          "price": 5100.00
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "name": "Lego 10369 Icons Plum Blossom (327 Pieces)",
+      "category": "Construction",
+      "brand": "LEGO",
+      "description": "Lego 10369 Icons Plum Blossom (327 Pieces)",
+      "originalPrice": 3499.00,
+      "currentPrice": 3499.00,
+      "discount": 0,
+      "inStock": true,
+      "image": "https://example.com/products/lego-plum.jpg",
+      "tags": ["LEGO", "Flowers", "Blossom"],
+      "variants": []
+    },
+    {
+      "id": 47,
+      "name": "Kinderkraft Lovi 3 In 1",
+      "category": "Cribs & Cots",
+      "brand": "Kinderkraft",
+      "description": "Kinderkraft Lovi 3 In 1",
+      "originalPrice": 11999.00,
+      "currentPrice": 4499.00,
+      "discount": 63,
+      "inStock": true,
+      "image": "https://example.com/products/crib.jpg",
+      "tags": ["Furniture", "Baby", "Convertible"],
+      "variants": []
+    },
+    {
+      "id": 48,
+      "name": "Avenir Tattoo Sticker",
+      "category": "Arts & Crafts",
+      "brand": "Avenir",
+      "description": "Avenir Tattoo Sticker",
+      "originalPrice": 399.00,
+      "currentPrice": 299.00,
+      "discount": 25,
+      "inStock": true,
+      "image": "https://example.com/products/tattoo-sticker.jpg",
+      "tags": ["Temporary Tattoo", "Sticker", "Body Art"],
+      "variants": []
+    },
+    {
+      "id": 49,
+      "name": "LEGO 10305 Icons Lion Knights' Castle",
+      "category": "Construction",
+      "brand": "LEGO",
+      "description": "LEGO 10305 Icons Lion Knights' Castle (4514 Pieces)",
+      "originalPrice": 24999.00,
+      "currentPrice": 19999.00,
+      "discount": 20,
+      "inStock": true,
+      "image": "https://example.com/products/lego-castle.jpg",
+      "tags": ["LEGO", "Castle", "Knights"],
+      "variants": []
+    },
+    {
+      "id": 50,
+      "name": "Melissa & Doug Wooden Building Blocks Set",
+      "category": "Construction",
+      "brand": "Melissa & Doug",
+      "description": "Melissa & Doug Wooden Building Blocks Set (100 Pieces)",
+      "originalPrice": 2999.00,
+      "currentPrice": 2499.00,
+      "discount": 17,
+      "inStock": true,
+      "image": "https://example.com/products/wooden-blocks.jpg",
+      "tags": ["Wooden", "Blocks", "Building"],
+      "variants": []
+    }
+  ],
+  "filters": {
+    "price": {
+      "min": 149.00,
+      "max": 509999.00
+    },
+    "brands": [
+      "Magna-Tiles",
+      "Jarmelo",
+      "Toycra",
+      "Open Ended",
+      "Bumkins",
+      "Fat Brain Toys",
+      "National Geographic",
+      "LEGO",
+      "Hot Wheels",
+      "Popular Playthings",
+      "Avenir",
+      "Kinderkraft",
+      "PepPlay",
+      "Doodle Hog",
+      "Melissa & Doug"
+    ],
+    "categories": [
+      "Construction",
+      "Arts & Crafts",
+      "Gift Cards",
+      "Motor Skills",
+      "Kids Games",
+      "Action & Toy Figures",
+      "Vehicles",
+      "Puzzles",
+      "Pretend Play",
+      "Mealtime Essentials",
+      "High Chairs",
+      "Mats, Gym & Activity",
+      "Cribs & Cots"
+    ],
+    "availability": ["In stock", "Low stock", "Out of stock"]
+  },
+  "sortOptions": [
+    "Best selling",
+    "Price: Low to High",
+    "Price: High to Low",
+    "Alphabetically: A-Z",
+    "Alphabetically: Z-A",
+    "Date: New to Old",
+    "Date: Old to New"
+  ]
+}
+
