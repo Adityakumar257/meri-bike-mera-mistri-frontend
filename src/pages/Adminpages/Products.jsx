@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaPlus, FaEdit, FaTrash, FaSpinner, FaBox, FaStar, FaGift } from 'react-icons/fa';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const Products = ({
   products,
@@ -13,6 +14,7 @@ const Products = ({
   deleteProductFromAPI,
   handleEditProduct
 }) => {
+  const { t } = useLanguage();
   const allProducts = products.all || [...products.toys, ...products.books, ...products.workshops];
 
   const handleDelete = async (type, id) => {
@@ -26,20 +28,20 @@ const Products = ({
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">View Products</h1>
+        <h1 className="text-2xl font-bold text-gray-800">{t('View Products')}</h1>
         <div className="flex space-x-2">
           <select
             value={activeForm}
             onChange={(e) => setActiveForm(e.target.value)}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
           >
-            <option value="all">All Products</option>
-            <option value="spare_part">Motorcycle Spare Parts</option>
-            <option value="toy">Toys</option>
-            <option value="educational_toy">Educational Toys</option>
-            <option value="robotic_kit">Robotic Kits</option>
-            <option value="book">Books</option>
-            <option value="workshop">Workshops</option>
+            <option value="all">{t('All Products')}</option>
+            <option value="spare_part">{t('Motorcycle Spare Parts')}</option>
+            <option value="toy">{t('Toys')}</option>
+            <option value="educational_toy">{t('Educational Toys')}</option>
+            <option value="robotic_kit">{t('Robotic Kits')}</option>
+            <option value="book">{t('Books')}</option>
+            <option value="workshop">{t('Workshops')}</option>
           </select>
           <button
             onClick={() => { setActiveSection('add'); setEditingId(null); setActiveForm('spare_part'); }}
@@ -47,7 +49,7 @@ const Products = ({
             disabled={!isAuthenticated()}
           >
             <FaPlus />
-            Add Product
+            {t('Add Product')}
           </button>
         </div>
       </div>
@@ -59,13 +61,13 @@ const Products = ({
       ) : allProducts.length === 0 ? (
         <div className="text-center py-12 bg-white rounded-xl shadow">
           <FaBox className="text-4xl text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-700">No products found</h3>
-          <p className="text-gray-500 mt-1">Start by adding your first product</p>
+          <h3 className="text-lg font-medium text-gray-700">{t('No products found')}</h3>
+          <p className="text-gray-500 mt-1">{t('Start by adding your first product')}</p>
           <button
             onClick={() => { setActiveForm('spare_part'); setActiveSection('add'); }}
             className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
           >
-            Add Product
+            {t('Add Product')}
           </button>
         </div>
       ) : (
@@ -74,13 +76,13 @@ const Products = ({
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('Image')}</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('Name')}</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('Type')}</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('Category')}</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('Price')}</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('Status')}</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('Actions')}</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">

@@ -11,14 +11,14 @@ import {
 } from '../utils/wishlistUtils';
 
 // Login user with guest cart merge
-export const loginUser = async (email, password) => {
+export const loginUser = async (name, password) => {
   try {
     // Prepare guest cart data for merge
     const guestCart = prepareGuestCartForMerge();
     const guestWishlist = prepareGuestWishlistForMerge();
     
     const response = await axios.post(`${API_BASE_URL}/auth/login`, {
-      email,
+      name,
       password,
       guestCart,
       guestWishlist

@@ -21,9 +21,11 @@ import {
 import { Link } from 'react-router-dom';
 // ✅ Import AuthService from centralized API
 import { AuthService } from '../../services/api';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const Profile = () => {
   const { user } = useAuth();
+  const { t } = useLanguage();
   const { getCartCount } = useCart();
   const { getWishlistCount } = useWishlist();
   
@@ -124,11 +126,11 @@ const Profile = () => {
       // ✅ Use AuthService instead of direct axios
       const response = await AuthService.updateProfile(userDetails);
       if (response.data.success) {
-        alert('Profile updated successfully!');
+        alert(t('Profile updated successfully!'));
       }
     } catch (error) {
       console.error('Error updating profile:', error);
-      alert('Failed to update profile. Please try again.');
+      alert(t('Failed to update profile. Please try again.'));
     }
   };
 
@@ -140,7 +142,7 @@ const Profile = () => {
     const confirmPassword = formData.get('confirmPassword');
 
     if (newPassword !== confirmPassword) {
-      alert('New password and confirm password do not match!');
+      alert(t('New password and confirm password do not match!'));
       return;
     }
 
@@ -152,12 +154,12 @@ const Profile = () => {
       });
       
       if (response.data.success) {
-        alert('Password changed successfully!');
+        alert(t('Password changed successfully!'));
         e.target.reset();
       }
     } catch (error) {
       console.error('Error changing password:', error);
-      alert(error.response?.data?.message || 'Failed to change password. Please try again.');
+      alert(t(error.response?.data?.message || 'Failed to change password. Please try again.'));
     }
   };
 
@@ -167,8 +169,8 @@ const Profile = () => {
       <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-6 text-white shadow-lg">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold mb-2">Welcome back, {userDetails.name}!</h2>
-            <p className="text-orange-100">Manage your account, orders, and preferences here.</p>
+            <h2 className="text-2xl font-bold mb-2">{t('Welcome back,')} {userDetails.name}!</h2>
+            <p className="text-orange-100">{t('Manage your account, orders, and preferences here.')}</p>
           </div>
           <div className="bg-white/20 p-3 rounded-full">
             <User className="w-8 h-8" />
@@ -181,7 +183,7 @@ const Profile = () => {
         <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-500 text-sm mb-1">Total Orders</p>
+              <p className="text-gray-500 text-sm mb-1">{t('Total Orders')}</p>
               <p className="text-3xl font-bold text-gray-800">{orders.length}</p>
             </div>
             <div className="bg-orange-100 p-3 rounded-lg">
@@ -196,7 +198,7 @@ const Profile = () => {
         <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-500 text-sm mb-1">Wishlist Items</p>
+              <p className="text-gray-500 text-sm mb-1">{t('Wishlist Items')}</p>
               <p className="text-3xl font-bold text-gray-800">{wishlistCount}</p>
             </div>
             <div className="bg-red-100 p-3 rounded-lg">
@@ -211,7 +213,7 @@ const Profile = () => {
         <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-500 text-sm mb-1">Cart Items</p>
+              <p className="text-gray-500 text-sm mb-1">{t('Cart Items')}</p>
               <p className="text-3xl font-bold text-gray-800">{cartCount}</p>
             </div>
             <div className="bg-blue-100 p-3 rounded-lg">
@@ -227,7 +229,7 @@ const Profile = () => {
       {/* Recent Orders */}
       <div className="bg-white rounded-xl shadow-md border border-gray-100 p-6">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-bold text-gray-800">Recent Orders</h3>
+          <h3 className="text-xl font-bold text-gray-800">{t('Recent Orders')}</h3>
           <Link to="/account/orders" className="text-orange-600 text-sm font-medium hover:text-orange-700">
             View all →
           </Link>
@@ -236,7 +238,7 @@ const Profile = () => {
         {loading ? (
           <div className="text-center py-8">
             <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-orange-600"></div>
-            <p className="text-gray-500 mt-2">Loading orders...</p>
+            <p className="text-gray-500 mt-2">{t('Loading orders...')}</p>
           </div>
         ) : orders.length > 0 ? (
           <div className="space-y-4">
@@ -244,13 +246,13 @@ const Profile = () => {
               <div key={order.id} className="flex items-center justify-between p-4 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors">
                 <div>
                   <div className="flex items-center">
-                    <span className="font-semibold text-gray-800">Order #{order.id}</span>
+                    <span className="font-semibold text-gray-800">{t('Order')} #{order.id}</span>
                     <span className={`ml-3 text-xs px-3 py-1 rounded-full flex items-center ${order.statusColor}`}>
                       {order.icon}
                       {order.status}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-500 mt-1">Placed on {order.date}</p>
+                  <p className="text-sm text-gray-500 mt-1">{t('Placed on')} {order.date}</p>
                 </div>
                 <div className="text-right">
                   <p className="font-bold text-gray-800">₹{order.total}</p>
@@ -262,7 +264,7 @@ const Profile = () => {
         ) : (
           <div className="text-center py-8">
             <ShoppingBag className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">No orders yet</p>
+            <p className="text-gray-500">{t('No orders yet')}</p>
             <Link to="/category/all" className="text-orange-600 font-medium hover:text-orange-700 mt-2 inline-block">
               Start Shopping →
             </Link>
@@ -275,7 +277,7 @@ const Profile = () => {
   const renderProfile = () => (
     <div className="bg-white rounded-xl shadow-md border border-gray-100 p-6">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl font-bold text-gray-800">Profile Information</h3>
+        <h3 className="text-xl font-bold text-gray-800">{t('Profile Information')}</h3>
         <button 
           onClick={() => document.getElementById('edit-profile-form').classList.toggle('hidden')}
           className="flex items-center text-orange-600 hover:text-orange-700 font-medium"
@@ -293,7 +295,7 @@ const Profile = () => {
               <User className="w-5 h-5 text-orange-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-500">Full Name</p>
+              <p className="text-sm text-gray-500">{t('Full Name')}</p>
               <p className="font-semibold text-gray-800">{userDetails.name || 'Not provided'}</p>
             </div>
           </div>
@@ -303,7 +305,7 @@ const Profile = () => {
               <Mail className="w-5 h-5 text-blue-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-500">Email Address</p>
+              <p className="text-sm text-gray-500">{t('Email Address')}</p>
               <p className="font-semibold text-gray-800">{userDetails.email}</p>
             </div>
           </div>
@@ -313,7 +315,7 @@ const Profile = () => {
               <Phone className="w-5 h-5 text-green-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-500">Mobile Number</p>
+              <p className="text-sm text-gray-500">{t('Mobile Number')}</p>
               <p className="font-semibold text-gray-800">{userDetails.mobile || 'Not provided'}</p>
             </div>
           </div>
@@ -323,7 +325,7 @@ const Profile = () => {
               <MapPin className="w-5 h-5 text-purple-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-500">Delivery Address</p>
+              <p className="text-sm text-gray-500">{t('Delivery Address')}</p>
               <p className="font-semibold text-gray-800">{userDetails.address || 'Not provided'}</p>
             </div>
           </div>
@@ -332,7 +334,7 @@ const Profile = () => {
 
       {/* Edit Profile Form (Hidden by default) */}
       <form id="edit-profile-form" className="hidden mt-8 space-y-6" onSubmit={handleSaveProfile}>
-        <h4 className="text-lg font-semibold text-gray-800">Edit Profile</h4>
+        <h4 className="text-lg font-semibold text-gray-800">{t('Edit Profile')}</h4>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
@@ -404,8 +406,8 @@ const Profile = () => {
           <Lock className="w-6 h-6 text-red-600" />
         </div>
         <div>
-          <h3 className="text-xl font-bold text-gray-800">Change Password</h3>
-          <p className="text-gray-500">Update your password to keep your account secure</p>
+          <h3 className="text-xl font-bold text-gray-800">{t('Change Password')}</h3>
+          <p className="text-gray-500">{t('Update your password to keep your account secure')}</p>
         </div>
       </div>
 
@@ -471,12 +473,12 @@ const Profile = () => {
 
   const renderOrders = () => (
     <div className="bg-white rounded-xl shadow-md border border-gray-100 p-6">
-      <h3 className="text-xl font-bold text-gray-800 mb-6">My Orders</h3>
+      <h3 className="text-xl font-bold text-gray-800 mb-6">{t('My Orders')}</h3>
       
       {loading ? (
         <div className="text-center py-12">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600"></div>
-          <p className="text-gray-500 mt-4">Loading your orders...</p>
+          <p className="text-gray-500 mt-4">{t('Loading your orders...')}</p>
         </div>
       ) : orders.length > 0 ? (
         <div className="space-y-4">
@@ -485,8 +487,8 @@ const Profile = () => {
               <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
                 <div className="flex flex-col md:flex-row md:items-center justify-between">
                   <div>
-                    <span className="font-bold text-gray-800">Order #{order.id}</span>
-                    <span className="text-gray-500 text-sm ml-4">Placed on {order.date}</span>
+                    <span className="font-bold text-gray-800">{t('Order')} #{order.id}</span>
+                    <span className="text-gray-500 text-sm ml-4">{t('Placed on')} {order.date}</span>
                   </div>
                   <div className="mt-2 md:mt-0">
                     <span className={`text-xs px-3 py-1.5 rounded-full flex items-center ${order.statusColor}`}>
@@ -519,8 +521,8 @@ const Profile = () => {
       ) : (
         <div className="text-center py-12">
           <ShoppingBag className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h4 className="text-lg font-semibold text-gray-800 mb-2">No orders yet</h4>
-          <p className="text-gray-500 mb-6">You haven't placed any orders yet.</p>
+          <h4 className="text-lg font-semibold text-gray-800 mb-2">{t('No orders yet')}</h4>
+          <p className="text-gray-500 mb-6">{t("You haven't placed any orders yet.")}</p>
           <Link to="/category/all" className="px-6 py-3 bg-orange-600 text-white font-medium rounded-lg hover:bg-orange-700 transition-colors inline-block">
             Start Shopping
           </Link>
@@ -573,18 +575,18 @@ const Profile = () => {
 
             {/* Quick Stats */}
             <div className="bg-white rounded-xl shadow-md border border-gray-100 p-6">
-              <h3 className="font-semibold text-gray-800 mb-4">Quick Stats</h3>
+              <h3 className="font-semibold text-gray-800 mb-4">{t('Quick Stats')}</h3>
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Total Orders</span>
+                  <span className="text-gray-600">{t('Total Orders')}</span>
                   <span className="font-bold text-gray-800">{orders.length}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Wishlist Items</span>
+                  <span className="text-gray-600">{t('Wishlist Items')}</span>
                   <span className="font-bold text-gray-800">{wishlistCount}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Cart Items</span>
+                  <span className="text-gray-600">{t('Cart Items')}</span>
                   <span className="font-bold text-gray-800">{cartCount}</span>
                 </div>
               </div>

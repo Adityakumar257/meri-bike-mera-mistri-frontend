@@ -18,6 +18,7 @@ import {
   Truck,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
+import { useLanguage } from "../../contexts/LanguageContext";
 import "../../components/layout/MotorcycleStorefront.css";
 import { categoryPath, searchPath } from "../../utils/storeRoutes";
 
@@ -79,16 +80,22 @@ const features = [
 const trustedBrands = ["BOSCH", "EXIDE", "Castrol", "MINDA", "ENDURANCE", "LUMAX", "NGK"];
 const fallbackImage = "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=900&q=80";
 
-const imageUrl = (id, width = 560) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${width}&q=80`;
+const imageUrl = (id, width = 900, height = 720) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${width}&h=${height}&q=85`;
 const searchUrl = searchPath;
 
-function PartImage({ id, alt, className = "" }) {
+function PartImage({ id, alt, className = "", hero = false, priority = false }) {
+  const height = hero ? 1080 : 720;
+  const widths = hero ? [768, 1280, 1920] : [480, 800, 1200];
   return (
     <img
       className={className}
-      src={imageUrl(id)}
+      src={imageUrl(id, hero ? 1920 : 900, height)}
+      srcSet={widths.map((width) => `${imageUrl(id, width, height)} ${width}w`).join(", ")}
+      sizes={hero ? "100vw" : "(max-width: 640px) 85vw, (max-width: 1100px) 40vw, 280px"}
       alt={alt}
-      loading="lazy"
+      loading={priority ? "eager" : "lazy"}
+      fetchPriority={priority ? "high" : "auto"}
+      decoding="async"
       onError={(event) => {
         event.currentTarget.onerror = null;
         event.currentTarget.src = fallbackImage;
@@ -98,27 +105,30 @@ function PartImage({ id, alt, className = "" }) {
 }
 
 function SectionHeading({ title, subtitle, link }) {
+  const { t } = useLanguage();
   return (
     <div className="mbmm-section-heading">
       <div>
         <h2>{title}</h2>
         {subtitle && <p>{subtitle}</p>}
       </div>
-      {link && <Link to={link}>View all <ArrowRight size={15} /></Link>}
+      {link && <Link to={link}>{t('View all')} <ArrowRight size={15} /></Link>}
     </div>
   );
 }
 
 function HorizontalControls({ onPrevious, onNext, label }) {
+  const { t } = useLanguage();
   return (
     <div className="mbmm-slider-controls">
-      <button type="button" onClick={onPrevious} aria-label={`Previous ${label}`}><ChevronLeft size={18} /></button>
-      <button type="button" onClick={onNext} aria-label={`Next ${label}`}><ChevronRight size={18} /></button>
+      <button type="button" onClick={onPrevious} aria-label={`${t('Previous')} ${label}`}><ChevronLeft size={18} /></button>
+      <button type="button" onClick={onNext} aria-label={`${t('Next')} ${label}`}><ChevronRight size={18} /></button>
     </div>
   );
 }
 
 function HomePage() {
+  const { t } = useLanguage();
   const [activeSlide, setActiveSlide] = useState(0);
   const [brand, setBrand] = useState("");
   const [model, setModel] = useState("");
@@ -155,12 +165,12 @@ function HomePage() {
     const file = event.target.files?.[0];
     if (!file) return;
     if (file.size > 10 * 1024 * 1024) {
-      toast.error("Please choose a file smaller than 10 MB.");
+      toast.error(t("Please choose a file smaller than 10 MB."));
       event.target.value = "";
       return;
     }
     setUploadFile(file);
-    toast.success("Your list is ready to attach to a bulk enquiry.");
+    toast.success(t("Your list is ready to attach to a bulk enquiry."));
   };
 
   const activeHero = heroSlides[activeSlide];
@@ -174,28 +184,29 @@ function HomePage() {
             className={`mbmm-hero-slide ${index === activeSlide ? "is-active" : ""}`}
             aria-hidden={index !== activeSlide}
           >
-            <PartImage id={slide.image} alt="Motorcycle and spare parts" className="mbmm-hero-image" />
+            <PartImage id={slide.image} alt={t("Motorcycle and spare parts")} className="mbmm-hero-image" hero priority={index === activeSlide} />
             <div className="mbmm-hero-shade" />
           </div>
         ))}
         <div className="mbmm-hero-content">
-          <span className="mbmm-hero-kicker">{activeHero.kicker}</span>
-          <h1>{activeHero.title.split("\n").map((line) => <span key={line}>{line}</span>)}</h1>
-          <p>{activeHero.text}</p>
+          <img className="mbmm-hero-brand-logo" src="/mbmm-logo.webp" alt="Meri Bike Mera Mistri" />
+          <span className="mbmm-hero-kicker">{t(activeHero.kicker)}</span>
+          <h1>{t(activeHero.title).split("\n").map((line) => <span key={line}>{line}</span>)}</h1>
+          <p>{t(activeHero.text)}</p>
           <Link className="mbmm-button mbmm-button-red" to={activeHero.bulk ? "/bulkorder" : "/category/all"}>
-            {activeHero.action}<ArrowRight size={17} />
+            {t(activeHero.action)}<ArrowRight size={17} />
           </Link>
         </div>
         <Link className="mbmm-hero-bulk-note" to="/bulkorder">
-          <span>RETAILER SPECIAL</span>
-          <strong>Bulk order<br />&amp; save more</strong>
-          <em>Explore deals <ArrowRight size={14} /></em>
+          <span>{t('RETAILER SPECIAL')}</span>
+          <strong>{t('Bulk order\n& save more').split("\n").map((line) => <span key={line}>{line}<br /></span>)}</strong>
+          <em>{t('Explore deals')} <ArrowRight size={14} /></em>
         </Link>
-        <button className="mbmm-hero-arrow mbmm-hero-prev" type="button" aria-label="Previous banner" onClick={() => moveSlide(-1)}><ArrowLeft size={19} /></button>
-        <button className="mbmm-hero-arrow mbmm-hero-next" type="button" aria-label="Next banner" onClick={() => moveSlide(1)}><ArrowRight size={19} /></button>
+        <button className="mbmm-hero-arrow mbmm-hero-prev" type="button" aria-label={t('Previous banner')} onClick={() => moveSlide(-1)}><ArrowLeft size={19} /></button>
+        <button className="mbmm-hero-arrow mbmm-hero-next" type="button" aria-label={t('Next banner')} onClick={() => moveSlide(1)}><ArrowRight size={19} /></button>
         <div className="mbmm-hero-dots">
           {heroSlides.map((slide, index) => (
-            <button key={slide.title} type="button" aria-label={`Show banner ${index + 1}`} aria-current={index === activeSlide} onClick={() => setActiveSlide(index)} />
+            <button key={slide.title} type="button" aria-label={`${t('Show banner')} ${index + 1}`} aria-current={index === activeSlide} onClick={() => setActiveSlide(index)} />
           ))}
         </div>
       </section>
@@ -203,29 +214,29 @@ function HomePage() {
       <div className="mbmm-page-content">
         <section className="mbmm-find-promo">
           <form className="mbmm-find-card" onSubmit={findPart}>
-            <h2><Search size={19} /> Find your part</h2>
+            <h2><Search size={19} /> {t('Find your part')}</h2>
             <label>
-              <span>Select Bike Brand</span>
+              <span>{t('Select Bike Brand')}</span>
               <select value={brand} onChange={(event) => { setBrand(event.target.value); setModel(""); }}>
-                <option value="">Choose a brand</option>
+                <option value="">{t('Choose a brand')}</option>
                 {brands.map((item) => <option key={item}>{item}</option>)}
               </select>
             </label>
             <label>
-              <span>Select Bike Model</span>
+              <span>{t('Select Bike Model')}</span>
               <select value={model} onChange={(event) => setModel(event.target.value)}>
-                <option value="">Choose a model</option>
+                <option value="">{t('Choose a model')}</option>
                 {(brand ? [`${brand} Splendor`, `${brand} Shine`, `${brand} 125`, `${brand} Classic`] : ["Splendor Plus", "Shine 125", "Pulsar 150", "Apache RTR"]).map((item) => <option key={item}>{item}</option>)}
               </select>
             </label>
             <label>
-              <span>Select Part Category</span>
+              <span>{t('Select Part Category')}</span>
               <select value={category} onChange={(event) => setCategory(event.target.value)}>
-                <option value="">Choose a category</option>
-                {categories.map((item) => <option key={item.name} value={item.name}>{item.name}</option>)}
+                <option value="">{t('Choose a category')}</option>
+                {categories.map((item) => <option key={item.name} value={item.name}>{t(item.name)}</option>)}
               </select>
             </label>
-            <button type="submit" className="mbmm-button mbmm-button-red"><Search size={17} /> Search parts</button>
+            <button type="submit" className="mbmm-button mbmm-button-red"><Search size={17} /> {t('Search parts')}</button>
           </form>
 
           <Link className="mbmm-promo-banner" to={searchUrl("two wheeler spare parts")}>
@@ -239,8 +250,8 @@ function HomePage() {
         </section>
 
         <section className="mbmm-section mbmm-brands-section">
-          <SectionHeading title="Shop by Bike Brand" subtitle="Find the right fit for your ride" />
-          <HorizontalControls label="brands" onPrevious={() => scrollRail(brandRail, -1)} onNext={() => scrollRail(brandRail, 1)} />
+          <SectionHeading title={t("Shop by Bike Brand")} subtitle={t("Find the right fit for your ride")} />
+          <HorizontalControls label={t("brands")} onPrevious={() => scrollRail(brandRail, -1)} onNext={() => scrollRail(brandRail, 1)} />
           <div className="mbmm-brand-rail" ref={brandRail}>
             {brands.map((item, index) => (
               <Link className={`mbmm-brand-card mbmm-brand-${index}`} key={item} to={searchUrl(item)}>
@@ -252,33 +263,33 @@ function HomePage() {
         </section>
 
         <section className="mbmm-section">
-          <SectionHeading title="Shop by Part Category" subtitle="Quality parts for every mile" link={categoryPath("all")} />
-          <HorizontalControls label="categories" onPrevious={() => scrollRail(categoryRail, -1)} onNext={() => scrollRail(categoryRail, 1)} />
+          <SectionHeading title={t("Shop by Part Category")} subtitle={t("Quality parts for every mile")} link={categoryPath("all")} />
+          <HorizontalControls label={t("categories")} onPrevious={() => scrollRail(categoryRail, -1)} onNext={() => scrollRail(categoryRail, 1)} />
           <div className="mbmm-category-rail" ref={categoryRail}>
             {categories.map((item) => (
               <Link className="mbmm-category-card" key={item.name} to={searchUrl(item.search)}>
                 <span className="mbmm-category-image"><PartImage id={item.image} alt={item.name} /></span>
-                <strong>{item.name}</strong>
+                <strong>{t(item.name)}</strong>
               </Link>
             ))}
           </div>
         </section>
 
         <section className="mbmm-section mbmm-deals-section">
-          <SectionHeading title="Fast-moving & Bulk Deals" subtitle="Popular picks for retailers and workshops" link={categoryPath("all")} />
-          <HorizontalControls label="products" onPrevious={() => scrollRail(productRail, -1)} onNext={() => scrollRail(productRail, 1)} />
+          <SectionHeading title={t("Fast-moving & Bulk Deals")} subtitle={t("Popular picks for retailers and workshops")} link={categoryPath("all")} />
+          <HorizontalControls label={t("products")} onPrevious={() => scrollRail(productRail, -1)} onNext={() => scrollRail(productRail, 1)} />
           <div className="mbmm-product-rail" ref={productRail}>
             {products.map((item) => (
               <article className="mbmm-product-card" key={item.name}>
                 <Link to={searchUrl(item.name)} className="mbmm-product-image">
                   <PartImage id={item.image} alt={item.name} />
-                  <span>Popular</span>
+                  <span>{t("Popular")}</span>
                 </Link>
                 <div className="mbmm-product-copy">
-                  <Link to={searchUrl(item.name)} className="mbmm-product-name">{item.name}</Link>
-                  <span className="mbmm-product-meta">{item.meta}</span>
-                  <strong className="mbmm-product-price">MRP {item.price}</strong>
-                  <Link to="/login" className="mbmm-wholesale-button">Login to view wholesale price</Link>
+                  <Link to={searchUrl(item.name)} className="mbmm-product-name">{t(item.name)}</Link>
+                  <span className="mbmm-product-meta">{t(item.meta)}</span>
+                  <strong className="mbmm-product-price">{t('MRP')} {item.price}</strong>
+                  <Link to="/login" className="mbmm-wholesale-button">{t("Login to view wholesale price")}</Link>
                 </div>
               </article>
             ))}
@@ -289,31 +300,31 @@ function HomePage() {
           <div className="mbmm-bulk-panel">
             <div className="mbmm-bulk-icon"><ClipboardList size={46} /><FileImage size={26} /></div>
             <div className="mbmm-bulk-copy">
-              <span>FOR RETAILERS &amp; WORKSHOPS</span>
-              <h2>Quick Bulk Order</h2>
-              <p>Upload your list (Excel / Photo)<br />and get an instant quotation.</p>
+              <span>{t("FOR RETAILERS & WORKSHOPS")}</span>
+              <h2>{t("Quick Bulk Order")}</h2>
+              <p>{t("Upload your list (Excel / Photo)")}<br />{t("and get an instant quotation.")}</p>
               {uploadFile && <small className="mbmm-upload-name"><CheckCircle2 size={14} /> {uploadFile.name}</small>}
               <div className="mbmm-bulk-actions">
                 <input ref={uploadInput} type="file" accept=".xlsx,.xls,.csv,.pdf,image/*" onChange={selectUpload} hidden />
                 <button className="mbmm-button mbmm-button-red" type="button" onClick={() => uploadFile ? navigate("/bulkorder", { state: { uploadedListName: uploadFile.name } }) : uploadInput.current?.click()}>
-                  {uploadFile ? "Continue to quote" : "Upload your list"} <ArrowRight size={15} />
+                  {uploadFile ? t("Continue to quote") : t("Upload your list")} <ArrowRight size={15} />
                 </button>
-                <Link to="/bulkorder">Get a quote without a file</Link>
+                <Link to="/bulkorder">{t("Get a quote without a file")}</Link>
               </div>
             </div>
           </div>
 
           <div className="mbmm-why-panel">
             <div className="mbmm-why-heading">
-              <span>THE MERI BIKE PROMISE</span>
-              <h2>Why choose us?</h2>
+              <span>{t("THE MERI BIKE PROMISE")}</span>
+              <h2>{t("Why choose us?")}</h2>
             </div>
             <div className="mbmm-feature-grid">
               {features.map((feature) => (
                 <div className="mbmm-feature" key={feature.title}>
                   <span>{createElement(feature.Icon, { size: 22 })}</span>
-                  <strong>{feature.title}</strong>
-                  <small>{feature.detail}</small>
+                  <strong>{t(feature.title)}</strong>
+                  <small>{t(feature.detail)}</small>
                 </div>
               ))}
             </div>
@@ -321,7 +332,7 @@ function HomePage() {
         </section>
 
         <section className="mbmm-trusted-section">
-          <div className="mbmm-trusted-title"><BadgeCheck size={17} /> Trusted Brands</div>
+          <div className="mbmm-trusted-title"><BadgeCheck size={17} /> {t("Trusted Brands")}</div>
           <div className="mbmm-trusted-logos">
             {trustedBrands.map((name, index) => <span className={`mbmm-trusted-logo mbmm-trusted-${index}`} key={name}>{name}</span>)}
           </div>
@@ -330,10 +341,10 @@ function HomePage() {
         <section className="mbmm-last-callout">
           <div className="mbmm-last-callout-icon"><Headphones size={27} /></div>
           <div>
-            <strong>Need help finding the right part?</strong>
-            <span>Our team is here to help you get back on the road.</span>
+            <strong>{t("Need help finding the right part?")}</strong>
+            <span>{t("Our team is here to help you get back on the road.")}</span>
           </div>
-          <a href="https://wa.me/918506911777" target="_blank" rel="noreferrer">Chat with our team <ArrowRight size={16} /></a>
+          <a href="https://wa.me/918506911777" target="_blank" rel="noreferrer">{t("Chat with our team")} <ArrowRight size={16} /></a>
         </section>
       </div>
     </div>

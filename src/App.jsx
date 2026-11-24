@@ -24,9 +24,10 @@ import AccountOrders from "./pages/AccountOrders.jsx";
 import StoreCatalog from "./pages/StoreCatalog.jsx";
 import ProductDetail from "./pages/ProductDetail.jsx";
 import { RecentlyViewedProvider } from './contexts/RecentlyViewedContext';
+import { LanguageProvider, LanguageSwitcher, useLanguage } from './contexts/LanguageContext';
 import Terms from './pages/FooterLinks/Terms.jsx';
-import VerificationPage from './components/layout/VerificationPage.jsx';
 import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import ScrollToTop from "./pages/ScrollToTop/ScrollToTop.jsx";
 // import AdminDashboard from './pages/admin/AdminDashboard';
 import ProtectedRoute from './components/common/ProtectedRoute';
@@ -97,15 +98,49 @@ const LoadingSpinner = () => (
 // ✅ New Component: Handles Layout Logic (Header/Footer Visibility)
 const AppContent = () => {
   const location = useLocation();
+  const { t } = useLanguage();
+  const [showInitialLoader, setShowInitialLoader] = useState(() => {
+    try {
+      return sessionStorage.getItem('mbmm-loader-seen') !== 'true';
+    } catch (error) {
+      console.warn('Could not read the loader session state:', error);
+      return true;
+    }
+  });
 
   // Define routes where Header and Footer should be hidden
   const shouldHideHeaderFooter = location.pathname.startsWith('/postdata')
     || location.pathname.startsWith('/admin');
 
+  const finishInitialLoader = () => {
+    try {
+      sessionStorage.setItem('mbmm-loader-seen', 'true');
+    } catch (error) {
+      console.warn('Could not save the loader session state:', error);
+    }
+    setShowInitialLoader(false);
+  };
+
+  useEffect(() => {
+    if (!showInitialLoader) return undefined;
+    const timer = window.setTimeout(finishInitialLoader, 3000);
+    return () => window.clearTimeout(timer);
+  }, [showInitialLoader]);
+
   return (
     <div className="App">
+      {showInitialLoader && (
+        <div className="mbmm-page-loader" role="dialog" aria-modal="true" aria-label={t('Loading your store...')}>
+          <div className="mbmm-page-loader-content">
+            <img src="/mbmm-logo.webp" alt="Meri Bike Mera Mistri" />
+            <p>{t('Loading your store...')}</p>
+            <button type="button" onClick={finishInitialLoader}>{t('Skip')}</button>
+          </div>
+        </div>
+      )}
       {/* ✅ Conditionally Render Header */}
       {!shouldHideHeaderFooter && <Header />}
+      {shouldHideHeaderFooter && <LanguageSwitcher className="mbmm-admin-language-switcher" />}
 
       <main className="min-h-screen">
         <Routes>
@@ -138,7 +173,7 @@ const AppContent = () => {
           <Route path="/register" element={<GuestRoute><Signup /></GuestRoute>} />
           <Route path="/admin/login" element={<GuestRoute><AdminLogin /></GuestRoute>} />
           <Route path="/forgot-password" element={<GuestRoute><ForgotPassword /></GuestRoute>} />
-          <Route path="/verify-email" element={<GuestRoute><VerificationPage /></GuestRoute>} />
+          <Route path="/reset-password/:token" element={<GuestRoute><ResetPassword /></GuestRoute>} />
           <Route path="/order/:orderId" element={<OrderDetails />} />
           <Route path="/profile" element={<Navigate replace to="/account" />} />
           
@@ -202,18 +237,20 @@ function App() {
         }}
       />
       
-      <AuthProvider>
-        <CartProvider>
-          <WishlistProvider>
-            <RecentlyViewedProvider>
-              <Router>
-                <ScrollToTop />
-                <AppContent />
-              </Router>
-            </RecentlyViewedProvider>
-          </WishlistProvider>
-        </CartProvider>
-      </AuthProvider>
+      <LanguageProvider>
+        <AuthProvider>
+          <CartProvider>
+            <WishlistProvider>
+              <RecentlyViewedProvider>
+                <Router>
+                  <ScrollToTop />
+                  <AppContent />
+                </Router>
+              </RecentlyViewedProvider>
+            </WishlistProvider>
+          </CartProvider>
+        </AuthProvider>
+      </LanguageProvider>
     </>
   );
 }

@@ -61,7 +61,9 @@ export const AuthProvider = ({ children }) => {
     // Clear legacy keys if they exist
     localStorage.removeItem('authToken');
     localStorage.removeItem('adminToken');
+    const loaderSeen = sessionStorage.getItem('mbmm-loader-seen');
     sessionStorage.clear();
+    if (loaderSeen === 'true') sessionStorage.setItem('mbmm-loader-seen', 'true');
   };
 
   const login = (userData, token) => {

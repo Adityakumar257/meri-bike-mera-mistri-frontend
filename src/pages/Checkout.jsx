@@ -28,6 +28,7 @@ import {
 } from 'react-icons/fa';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import api from '../services/api';
 import toast from 'react-hot-toast';
 
@@ -48,6 +49,7 @@ const Checkout = () => {
     (initialPayment !== 'success' || !initialOrderId || !initialSessionId);
   const { cart: cartItems, getCartTotal, clearCart } = useCart();
   const { user, isAuthenticated, token } = useAuth();
+  const { t } = useLanguage();
   
   const [step, setStep] = useState(1);
   const [paymentMethod, setPaymentMethod] = useState(
@@ -107,12 +109,12 @@ const Checkout = () => {
   // Authentication check
   useEffect(() => {
     if (!isAuthenticated) {
-      toast.error('Please login to continue checkout');
+      toast.error(t('Please login to continue checkout'));
       const returnPath = `${location.pathname}${location.search}`;
       localStorage.setItem('redirectPath', returnPath);
       navigate('/login');
     }
-  }, [isAuthenticated, location.pathname, location.search, navigate]);
+  }, [isAuthenticated, location.pathname, location.search, navigate, t]);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -159,13 +161,13 @@ const Checkout = () => {
       setPendingOrderId(null);
       localStorage.removeItem('pendingOrderId');
       clearCart();
-      toast.success('Payment successful! Your order is confirmed.');
+      toast.success(t('Payment successful! Your order is confirmed.'));
       navigate('/checkout', { replace: true });
     }).catch(error => {
       if (!active) return;
       const message = error.response?.data?.message || error.message || 'Unable to verify Stripe payment';
       setPaymentError(message);
-      toast.error(message);
+      toast.error(t(message));
       navigate('/checkout', { replace: true });
     }).finally(() => {
       if (active) setLoading(false);
@@ -174,7 +176,7 @@ const Checkout = () => {
     return () => {
       active = false;
     };
-  }, [location.search, isAuthenticated, token, navigate, clearCart]);
+  }, [location.search, isAuthenticated, token, navigate, clearCart, t]);
 
   // Safe cart items
   const safeCartItems = Array.isArray(cartItems) ? cartItems : [];
@@ -217,13 +219,13 @@ const Checkout = () => {
           setShowSuggestions(true);
         }
         
-        toast.success('Address auto-filled from pincode!');
+        toast.success(t('Address auto-filled from pincode!'));
       } else {
-        toast.error('Invalid pincode or no data found');
+        toast.error(t('Invalid pincode or no data found'));
       }
     } catch (error) {
       console.error('Error fetching pincode data:', error);
-      toast.error('Failed to fetch address. Please enter manually.');
+      toast.error(t('Failed to fetch address. Please enter manually.'));
     } finally {
       setLoadingAddress(false);
     }
@@ -249,7 +251,7 @@ const Checkout = () => {
       address: `${postOffice.Name}, ${postOffice.Region}`
     }));
     setShowSuggestions(false);
-    toast.success('Address selected!');
+    toast.success(t('Address selected!'));
   };
 
   const handleNextStep = () => {
@@ -258,7 +260,7 @@ const Checkout = () => {
       const missingFields = requiredFields.filter(field => !shippingInfo[field].trim());
       
       if (missingFields.length > 0) {
-        toast.error(`Please fill in: ${missingFields.map(f => {
+        toast.error(`${t('Please fill in:')} ${missingFields.map(f => {
           const fieldNames = {
             fullName: 'Full Name',
             phone: 'Phone Number',
@@ -273,23 +275,23 @@ const Checkout = () => {
       }
 
       if (shippingInfo.phone.length !== 10 || !/^\d+$/.test(shippingInfo.phone)) {
-        toast.error('Please enter a valid 10-digit phone number');
+        toast.error(t('Please enter a valid 10-digit phone number'));
         return;
       }
 
       if (shippingInfo.pincode.length !== 6 || !/^\d+$/.test(shippingInfo.pincode)) {
-        toast.error('Please enter a valid 6-digit pincode');
+        toast.error(t('Please enter a valid 6-digit pincode'));
         return;
       }
     }
     
     if (step === 2 && !selectedPaymentType) {
-      toast.error('Please select a payment method');
+      toast.error(t('Please select a payment method'));
       return;
     }
     
     if (step === 3 && !termsAccepted) {
-      toast.error('Please accept the terms and conditions');
+      toast.error(t('Please accept the terms and conditions'));
       return;
     }
     
@@ -333,7 +335,7 @@ const Checkout = () => {
   const handlePlaceOrder = async () => {
     try {
       if (!termsAccepted) {
-        toast.error('Please accept the terms and conditions');
+        toast.error(t('Please accept the terms and conditions'));
         return;
       }
 
@@ -379,7 +381,7 @@ const Checkout = () => {
         localStorage.setItem('lastOrderId', order._id);
         localStorage.removeItem('pendingOrderId');
         setPendingOrderId(null);
-        toast.success('Order placed successfully!');
+        toast.success(t('Order placed successfully!'));
         return;
       }
 
@@ -396,7 +398,7 @@ const Checkout = () => {
         'Failed to place order';
 
       setPaymentError(message);
-      toast.error(message);
+      toast.error(t(message));
     } finally {
       setLoading(false);
     }
@@ -416,22 +418,22 @@ const Checkout = () => {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center bg-white rounded-lg shadow p-12">
             <div className="text-6xl mb-6">🛒</div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">Your cart is empty</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">{t('Your cart is empty')}</h1>
             <p className="text-gray-600 mb-8 max-w-md mx-auto">
-              Add some amazing toys to your cart before proceeding to checkout!
+              {t('Add some amazing products!')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/category/all"
                 className="bg-orange-600 hover:bg-orange-700 text-white px-8 py-3 rounded-md font-medium"
               >
-                Browse Toys
+                {t('Browse all parts')}
               </Link>
               <Link
                 to="/cart"
                 className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-8 py-3 rounded-md font-medium"
               >
-                View Cart
+                {t('Shopping Cart')}
               </Link>
             </div>
           </div>
@@ -450,9 +452,9 @@ const Checkout = () => {
                 <FiCheckCircle className="w-10 h-10 text-green-600" />
               </div>
               
-              <h1 className="text-3xl font-bold text-gray-900 mb-4">Order Confirmed!</h1>
+              <h1 className="text-3xl font-bold text-gray-900 mb-4">{t('Order Confirmed!')}</h1>
               <p className="text-gray-600 mb-6">
-                Thank you for your order. Your order number is:
+                {t('Thank you for your order. Your order number is:')}
               </p>
               <div className="bg-gray-100 rounded-lg p-4 mb-6">
                 <p className="text-2xl font-bold text-gray-900">{orderData?.orderNumber}</p>
@@ -460,19 +462,19 @@ const Checkout = () => {
               
               <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-8">
                 <p className="text-green-800">
-                  <span className="font-semibold">Order Summary:</span> {orderData?.items?.length || safeCartItems.length} items • Total: ₹{(orderData?.totalAmount ?? total).toFixed(2)}
+                  <span className="font-semibold">{t('Order Summary:')}</span> {orderData?.items?.length || safeCartItems.length} {t('items')} • {t('Total')}: ₹{(orderData?.totalAmount ?? total).toFixed(2)}
                 </p>
                 <p className="text-green-800 mt-2">
                   Estimated delivery: 4-5 business days
                 </p>
                 {paymentMethod === 'cod' && (
                   <p className="text-green-800 mt-1">
-                    <span className="font-semibold">Payment:</span> Cash on Delivery
+                    <span className="font-semibold">{t('Payment:')}</span> {t('Cash on Delivery')}
                   </p>
                 )}
                 {paymentMethod === 'online' && (
                   <p className="text-green-800 mt-1">
-                    <span className="font-semibold">Payment:</span> Online Payment (Processed through Stripe)
+                    <span className="font-semibold">{t('Payment:')}</span> {t('Online Payment (Processed through Stripe)')}
                   </p>
                 )}
               </div>
@@ -482,13 +484,13 @@ const Checkout = () => {
                   to={`/orders/${orderData?._id}`}
                   className="bg-orange-600 hover:bg-orange-700 text-white px-8 py-3 rounded-md font-medium"
                 >
-                  View Order Details
+                  {t('View Order Details')}
                 </Link>
                 <Link
                   to="/category/all"
                   className="border border-orange-600 text-orange-600 hover:bg-orange-50 px-8 py-3 rounded-md font-medium"
                 >
-                  Continue Shopping
+                  {t('Continue shopping')}
                 </Link>
               </div>
             </div>
@@ -509,10 +511,10 @@ const Checkout = () => {
               className="inline-flex items-center text-orange-600 hover:text-orange-700"
             >
               <FiArrowLeft className="mr-2" />
-              Back to Cart
+              {t('Back to Cart')}
             </Link>
             <div className="text-sm text-gray-600">
-              Step {step} of 3
+              {t('Step')} {step} {t('of')} 3
             </div>
           </div>
           
@@ -521,7 +523,7 @@ const Checkout = () => {
               <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${step >= 1 ? 'bg-orange-600 text-white' : 'bg-gray-200'}`}>
                 1
               </div>
-              <span className="text-sm font-medium">Shipping</span>
+              <span className="text-sm font-medium">{t('Shipping')}</span>
             </div>
             
             <div className={`flex-1 h-1 ${step >= 2 ? 'bg-orange-600' : 'bg-gray-200'}`}></div>
@@ -530,7 +532,7 @@ const Checkout = () => {
               <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${step >= 2 ? 'bg-orange-600 text-white' : 'bg-gray-200'}`}>
                 2
               </div>
-              <span className="text-sm font-medium">Payment</span>
+              <span className="text-sm font-medium">{t('Payment')}</span>
             </div>
             
             <div className={`flex-1 h-1 ${step >= 3 ? 'bg-orange-600' : 'bg-gray-200'}`}></div>
@@ -539,7 +541,7 @@ const Checkout = () => {
               <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${step >= 3 ? 'bg-orange-600 text-white' : 'bg-gray-200'}`}>
                 3
               </div>
-              <span className="text-sm font-medium">Confirm</span>
+              <span className="text-sm font-medium">{t('Confirm')}</span>
             </div>
           </div>
         </div>
@@ -550,13 +552,13 @@ const Checkout = () => {
             <div className="flex items-start">
               <FiAlertCircle className="w-5 h-5 text-red-600 mr-3 mt-0.5 flex-shrink-0" />
               <div>
-                <p className="text-sm font-medium text-red-800">Payment Error</p>
+                <p className="text-sm font-medium text-red-800">{t('Payment Error')}</p>
                 <p className="text-sm text-red-700 mt-1">{paymentError}</p>
                 <button
                   onClick={() => setPaymentError(null)}
                   className="text-sm text-red-600 hover:text-red-800 mt-2"
                 >
-                  Dismiss
+                  {t('Dismiss')}
                 </button>
               </div>
             </div>
@@ -750,7 +752,7 @@ const Checkout = () => {
                           <FiPackage className="mr-2" />
                           Cash on Delivery
                         </span>
-                        <p className="text-gray-600 mt-1">Pay when you receive the order</p>
+                        <p className="text-gray-600 mt-1">{t('Pay when you receive the order')}</p>
                       </div>
                     </div>
                   </div>
@@ -773,7 +775,7 @@ const Checkout = () => {
                           <FiCreditCard className="mr-2" />
                           Online Payment
                         </span>
-                        <p className="text-gray-600 mt-1">Secure payment by card and supported local payment methods via Stripe</p>
+                        <p className="text-gray-600 mt-1">{t('Secure payment by card and supported local payment methods via Stripe')}</p>
                         
                         {/* Accepted Cards */}
                         <div className="flex space-x-2 mt-3">
@@ -798,7 +800,7 @@ const Checkout = () => {
                     <div className="flex items-start">
                       <FiShield className="w-5 h-5 text-blue-600 mr-3 mt-0.5 flex-shrink-0" />
                       <div>
-                        <p className="text-sm font-medium text-blue-800">Secure Stripe Checkout</p>
+                        <p className="text-sm font-medium text-blue-800">{t('Secure Stripe Checkout')}</p>
                         <p className="text-xs text-blue-700 mt-1">
                           You will be redirected to Stripe to complete payment securely, then returned here to confirm your order.
                         </p>
@@ -819,15 +821,15 @@ const Checkout = () => {
                 
                 {/* Order Summary */}
                 <div className="mb-8">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Order Summary</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('Order Summary')}</h3>
                   <div className="space-y-3">
                     {safeCartItems.map((item) => (
                       <div key={item.id} className="flex justify-between items-center py-3 border-b">
                         <div className="flex-1">
                           <p className="font-medium text-gray-900">{item.name}</p>
                           <div className="flex items-center gap-4 text-sm text-gray-600">
-                            <span>Qty: {item.quantity}</span>
-                            <span>Price: ₹{item.currentPrice.toLocaleString()}</span>
+                            <span>{t('Qty:')} {item.quantity}</span>
+                            <span>{t('Price:')} ₹{item.currentPrice.toLocaleString()}</span>
                           </div>
                         </div>
                         <p className="font-medium text-lg">
@@ -840,15 +842,15 @@ const Checkout = () => {
                   {/* Totals */}
                   <div className="mt-6 space-y-2">
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Subtotal</span>
+                      <span className="text-gray-600">{t('Subtotal')}</span>
                       <span>₹{subtotal.toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Shipping</span>
-                      <span className="text-green-600">FREE</span>
+                      <span className="text-gray-600">{t('Shipping')}</span>
+                      <span className="text-green-600">{t('FREE')}</span>
                     </div>
                     <div className="flex justify-between pt-4 border-t">
-                      <span className="text-lg font-semibold">Total</span>
+                      <span className="text-lg font-semibold">{t('Total')}</span>
                       <span className="text-xl font-bold text-orange-600">₹{total.toFixed(2)}</span>
                     </div>
                   </div>
@@ -856,7 +858,7 @@ const Checkout = () => {
 
                 {/* Shipping Information Review */}
                 <div className="mb-8">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Shipping Details</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('Shipping Details')}</h3>
                   <div className="bg-gray-50 rounded-lg p-4">
                     <div className="flex items-start">
                       <FiUser className="w-5 h-5 text-gray-400 mr-3 mt-1" />
@@ -881,7 +883,7 @@ const Checkout = () => {
                         </p>
                         {shippingInfo.landmark && (
                           <p className="text-gray-500 text-sm mt-1">
-                            Landmark: {shippingInfo.landmark}
+                            {t('Landmark:')} {shippingInfo.landmark}
                           </p>
                         )}
                       </div>
@@ -891,7 +893,7 @@ const Checkout = () => {
 
                 {/* Payment Method Review */}
                 <div className="mb-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Payment Method</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('Payment Method')}</h3>
                   <div className="bg-gray-50 rounded-lg p-4">
                     <div className="flex items-center justify-between">
                       <div>
@@ -900,9 +902,9 @@ const Checkout = () => {
                             <>
                               <FiPackage className="w-5 h-5 text-gray-600 mr-3" />
                               <div>
-                                <p className="font-medium">Cash on Delivery</p>
+                                <p className="font-medium">{t('Cash on Delivery')}</p>
                                 <p className="text-sm text-gray-600 mt-1">
-                                  Pay when you receive the order
+                                  {t('Pay when you receive the order')}
                                 </p>
                               </div>
                             </>
@@ -910,9 +912,9 @@ const Checkout = () => {
                             <>
                               <FiCreditCard className="w-5 h-5 text-gray-600 mr-3" />
                               <div>
-                                <p className="font-medium">Online Payment</p>
+                                <p className="font-medium">{t('Online Payment')}</p>
                                 <p className="text-sm text-gray-600 mt-1">
-                                  Secure payment through Stripe
+                                  {t('Secure payment through Stripe')}
                                 </p>
                               </div>
                             </>
@@ -925,7 +927,7 @@ const Checkout = () => {
                     {selectedPaymentType === 'online' && (
                       <div className="mt-4 p-3 bg-blue-50 rounded border border-blue-200">
                         <p className="text-sm text-blue-800">
-                          <strong>Note:</strong> After placing your order, you will be redirected to Stripe to complete payment securely.
+                          <strong>{t('Note:')}</strong> {t('After placing your order, you will be redirected to Stripe to complete payment securely.')}
                         </p>
                       </div>
                     )}
@@ -1001,22 +1003,22 @@ const Checkout = () => {
           {/* Right Column - Order Summary */}
           <div className="lg:w-1/3">
             <div className="bg-white rounded-lg shadow p-6 sticky top-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Order Summary</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-6">{t('Order Summary')}</h2>
               
               <div className="space-y-4">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Subtotal ({safeCartItems.length} items)</span>
+                  <span className="text-gray-600">{t('Subtotal')} ({safeCartItems.length} {t('items')})</span>
                   <span className="font-medium">₹{subtotal.toLocaleString()}</span>
                 </div>
                 
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Shipping</span>
-                  <span className="font-medium text-green-600">FREE</span>
+                  <span className="text-gray-600">{t('Shipping')}</span>
+                  <span className="font-medium text-green-600">{t('FREE')}</span>
                 </div>
                 
                 <div className="border-t pt-4">
                   <div className="flex justify-between text-lg font-bold">
-                    <span>Total</span>
+                    <span>{t('Total')}</span>
                     <span>₹{total.toFixed(2)}</span>
                   </div>
                 </div>
@@ -1026,14 +1028,14 @@ const Checkout = () => {
               <div className="mt-6 pt-6 border-t">
                 <div className="flex items-center justify-center space-x-2 mb-3">
                   <FiShield className="w-5 h-5 text-green-600" />
-                  <span className="text-sm font-medium text-gray-700">100% Secure Payment</span>
+                  <span className="text-sm font-medium text-gray-700">{t('100% Secure Payment')}</span>
                 </div>
                 
                 {/* Stripe Badge for Online Payment */}
                 {selectedPaymentType === 'online' && (
                   <div className="flex flex-col items-center justify-center bg-gray-100 rounded-lg p-4">
                     <div className="text-center mb-3">
-                      <div className="text-xs text-gray-500 mb-1">Powered by</div>
+                      <div className="text-xs text-gray-500 mb-1">{t('Powered by')}</div>
                       <div className="text-xl font-bold text-blue-600">Stripe</div>
                     </div>
                     <div className="text-xs text-gray-500 text-center">
@@ -1047,8 +1049,8 @@ const Checkout = () => {
                   <div className="flex flex-col items-center justify-center bg-gray-100 rounded-lg p-4">
                     <div className="text-center">
                       <FiPackage className="w-8 h-8 text-orange-600 mb-2" />
-                      <div className="text-sm font-medium text-gray-700">Cash on Delivery</div>
-                      <div className="text-xs text-gray-500 mt-1">Pay when you receive</div>
+                      <div className="text-sm font-medium text-gray-700">{t('Cash on Delivery')}</div>
+                      <div className="text-xs text-gray-500 mt-1">{t('Pay when you receive')}</div>
                     </div>
                   </div>
                 )}
@@ -1057,15 +1059,15 @@ const Checkout = () => {
               {/* Need Help Section */}
               <div className="mt-6 pt-6 border-t">
                 <div className="text-center">
-                  <p className="text-sm text-gray-600 mb-2">Need help with your order?</p>
+                  <p className="text-sm text-gray-600 mb-2">{t('Need help with your order?')}</p>
                   <div className="flex items-center justify-center space-x-4 text-sm">
                     <a href="tel:+918506911777" className="text-orange-600 hover:text-orange-700">
                       <FiPhone className="inline mr-1" />
-                      Call Us
+                      {t('Call Us')}
                     </a>
                     <a href="mailto:brainytoys9@gmail.com" className="text-orange-600 hover:text-orange-700">
                       <FiMail className="inline mr-1" />
-                      Email
+                      {t('Email')}
                     </a>
                   </div>
                 </div>

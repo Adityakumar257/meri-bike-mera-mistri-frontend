@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
 import { useWishlist } from '../contexts/WishlistContext';
+import { getLocalizedProduct, useLanguage } from '../contexts/LanguageContext';
 import { ProductService } from '../services/api';
 import { productPath } from '../utils/storeRoutes';
 import {
@@ -28,11 +29,26 @@ const readStoredItems = (key) => {
   }
 };
 
+const getProductPricing = (product, user, variant) => {
+  const mrp = Number(variant?.originalPrice ?? product?.mrp ?? product?.originalPrice ?? variant?.price ?? product?.price ?? 0);
+  const wholesalePrice = variant?.wholesalePrice ?? product?.wholesalePrice;
+  const hasWholesalePrice = user?.retailerStatus === 'approved'
+    && wholesalePrice !== undefined
+    && wholesalePrice !== null;
+
+  return {
+    mrp,
+    price: Number(hasWholesalePrice ? wholesalePrice : mrp),
+    hasWholesalePrice
+  };
+};
+
 const ProductDetail = () => {
   const { slug } = useParams();
   const id = slug?.match(/(?:^|-)([a-f0-9]{24})$/i)?.[1] || slug;
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user, getAuthAxios } = useAuth();
+  const { language, t } = useLanguage();
   const { addToCart: addToContextCart, cart } = useCart();
   const { addToWishlist: addToContextWishlist, wishlist } = useWishlist();
   
@@ -93,11 +109,12 @@ const ProductDetail = () => {
     setAddingToCart(true);
     
     try {
+      const { price } = getProductPricing(product, user, selectedVariant);
       const productToAdd = {
         productId: product._id,
-        name: product.name,
-        currentPrice: selectedVariant?.price ?? product.wholesalePrice ?? product.originalPrice ?? product.price,
-        originalPrice: selectedVariant?.originalPrice || product.originalPrice,
+        name: getLocalizedProduct(product, language).name,
+        currentPrice: price,
+        originalPrice: product.mrp ?? product.originalPrice ?? product.price,
         image: product.images?.[0]?.url || product.images?.[0] || product.image,
         type: product.type || 'toy',
         quantity,
@@ -131,11 +148,11 @@ const ProductDetail = () => {
         addToContextCart(productToAdd);
       }
       
-      alert('Product added to cart!');
+      alert(t('Product added to cart!'));
       
     } catch (error) {
       console.error('Error adding to cart:', error);
-      alert('Failed to add to cart. Please try again.');
+      alert(t('Failed to add to cart. Please try again.'));
     } finally {
       setAddingToCart(false);
     }
@@ -147,10 +164,11 @@ const ProductDetail = () => {
     setAddingToWishlist(true);
     
     try {
+      const { price } = getProductPricing(product, user, selectedVariant);
       const productToWishlist = {
         productId: product._id,
-        name: product.name,
-        currentPrice: selectedVariant?.price || product.price,
+        name: getLocalizedProduct(product, language).name,
+        currentPrice: price,
         originalPrice: selectedVariant?.originalPrice || product.originalPrice,
         image: product.images?.[0]?.url || product.images?.[0] || product.image,
         type: product.type || 'toy',
@@ -184,11 +202,11 @@ const ProductDetail = () => {
         }
       }
       
-      alert('Added to wishlist!');
+      alert(t('Added to wishlist!'));
       
     } catch (error) {
       console.error('Error adding to wishlist:', error);
-      alert('Failed to add to wishlist. Please try again.');
+      alert(t('Failed to add to wishlist. Please try again.'));
     } finally {
       setAddingToWishlist(false);
     }
@@ -221,23 +239,22 @@ const ProductDetail = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-800">Product not found</h2>
+          <h2 className="text-2xl font-bold text-gray-800">{t('Product not found')}</h2>
           <button 
             onClick={() => navigate('/')}
             className="mt-4 px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700"
           >
-            Go Back Home
+            {t('Go Back Home')}
           </button>
         </div>
       </div>
     );
   }
 
-  const currentPrice = selectedVariant?.price || product.originalPrice || product.price;
-  const displayPrice = Number(product.wholesalePrice ?? product.originalPrice ?? currentPrice);
-  const isWholesalePrice = product.wholesalePrice !== undefined && product.wholesalePrice !== null;
+  const localizedProduct = getLocalizedProduct(product, language);
+  const { mrp: originalPrice, price: displayPrice, hasWholesalePrice: isWholesalePrice } = getProductPricing(product, user, selectedVariant);
+  const currentPrice = displayPrice;
   const minimumOrderQuantity = Math.max(1, Number(product.minimumOrderQuantity) || 1);
-  const originalPrice = selectedVariant?.originalPrice || product.originalPrice;
   const discountPercentage = originalPrice > currentPrice 
     ? Math.round(((originalPrice - currentPrice) / originalPrice) * 100)
     : 0;
@@ -247,13 +264,13 @@ const ProductDetail = () => {
       <div className="max-w-7xl mx-auto px-4">
         {/* Breadcrumb */}
         <div className="mb-6 text-sm text-gray-600">
-          <span className="hover:text-orange-600 cursor-pointer" onClick={() => navigate('/')}>Home</span>
+          <span className="hover:text-orange-600 cursor-pointer" onClick={() => navigate('/')}>{t('Home')}</span>
           <span className="mx-2">›</span>
           <span className="hover:text-orange-600 cursor-pointer" onClick={() => navigate(`/search?q=${encodeURIComponent(product.category || '')}`)}>
             {product.category}
           </span>
           <span className="mx-2">›</span>
-          <span className="text-gray-900 font-medium">{product.name}</span>
+          <span className="text-gray-900 font-medium">{localizedProduct.name}</span>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -262,7 +279,7 @@ const ProductDetail = () => {
             <div className="mb-4">
               <img
                 src={typeof product.images?.[selectedImage] === 'string' ? product.images[selectedImage] : product.images?.[selectedImage]?.url || product.image}
-                alt={product.name}
+                alt={localizedProduct.name}
                 className="w-full h-96 object-contain rounded-lg"
               />
             </div>
@@ -282,7 +299,7 @@ const ProductDetail = () => {
                   >
                     <img
                       src={typeof img === 'string' ? img : img?.url}
-                      alt={`${product.name} view ${index + 1}`}
+                      alt={`${localizedProduct.name} ${t('view')} ${index + 1}`}
                       className="w-full h-full object-cover"
                     />
                   </button>
@@ -293,7 +310,7 @@ const ProductDetail = () => {
 
           {/* Product Details */}
           <div className="bg-white rounded-xl shadow-lg p-6">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">{product.name}</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">{localizedProduct.name}</h1>
             
             {/* Brand and Category */}
             <div className="flex items-center space-x-4 mb-4">
@@ -303,7 +320,7 @@ const ProductDetail = () => {
                 </span>
               )}
               <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">
-                {product.category}
+                {t(product.category)}
               </span>
               {product.ageGroup && (
                 <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
@@ -338,8 +355,8 @@ const ProductDetail = () => {
                   ₹{displayPrice.toLocaleString('en-IN')}
                 </span>
                 {isWholesalePrice ? (
-                  <span className="ml-3 text-sm font-semibold text-blue-700">Wholesale price</span>
-                ) : originalPrice > currentPrice && (
+                  <span className="ml-3 text-sm font-semibold text-blue-700">{t('Wholesale price')}</span>
+                ) : originalPrice > currentPrice ? (
                   <>
                     <span className="ml-3 text-xl text-gray-500 line-through">
                       ₹{originalPrice.toLocaleString('en-IN')}
@@ -348,24 +365,28 @@ const ProductDetail = () => {
                       {discountPercentage}% OFF
                     </span>
                   </>
+                ) : (
+                  <span className="ml-3 text-sm text-gray-600">{t('MRP')}</span>
                 )}
               </div>
               {product.stock > 0 ? (
                 <div className="flex items-center mt-2 text-green-600">
                   <FaCheck className="mr-2" />
-                  <span>In Stock ({product.stock} available)</span>
+                  <span>{t('In Stock')} ({product.stock} {t('available')})</span>
                 </div>
               ) : (
-                <div className="text-red-600 mt-2">Out of Stock</div>
+                <div className="text-red-600 mt-2">{t('Out of Stock')}</div>
               )}
             </div>
 
             {/* Variants Selection */}
             {product.variants && product.variants.length > 0 && (
               <div className="mb-6">
-                <h3 className="text-lg font-semibold mb-3">Select Variant:</h3>
+                <h3 className="text-lg font-semibold mb-3">{t('Select Variant:')}</h3>
                 <div className="flex flex-wrap gap-2">
-                  {product.variants.map((variant, index) => (
+                  {product.variants.map((variant, index) => {
+                    const variantPrice = getProductPricing(product, user, variant).price;
+                    return (
                     <button
                       key={index}
                       onClick={() => setSelectedVariant(variant)}
@@ -375,18 +396,19 @@ const ProductDetail = () => {
                           : 'border-gray-200 hover:border-gray-300'
                       }`}
                     >
-                      {variant.name} - ₹{variant.price.toLocaleString('en-IN')}
+                        {variant.name} - ₹{variantPrice.toLocaleString('en-IN')}
                     </button>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             )}
 
             {/* Quantity Selector */}
             <div className="mb-6">
-              <h3 className="text-lg font-semibold mb-3">Quantity:</h3>
+              <h3 className="text-lg font-semibold mb-3">{t('Quantity:')}</h3>
               {minimumOrderQuantity > 1 && (
-              <p className="mb-2 text-sm text-gray-600">Minimum order: {minimumOrderQuantity}</p>
+              <p className="mb-2 text-sm text-gray-600">{t('Minimum order:')} {minimumOrderQuantity}</p>
               )}
               <div className="flex items-center">
                 <button
@@ -407,7 +429,7 @@ const ProductDetail = () => {
                   +
                 </button>
                 <span className="ml-4 text-gray-600">
-                  Max: {product.stock || 10} items
+                  {t('Max:')} {product.stock || 10} {t('items')}
                 </span>
               </div>
             </div>
@@ -426,7 +448,7 @@ const ProductDetail = () => {
                 {addingToCart ? (
                   <>
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                    Adding...
+                    {t('Adding...')}
                   </>
                 ) : inCart ? (
                   <>
@@ -436,7 +458,7 @@ const ProductDetail = () => {
                 ) : (
                   <>
                     <FaShoppingCart className="mr-2" />
-                    Add to Cart
+                    {t('Add to cart')}
                   </>
                 )}
               </button>
@@ -446,7 +468,7 @@ const ProductDetail = () => {
                 disabled={product.stock <= 0}
                 className="flex-1 py-3 px-6 bg-gray-900 hover:bg-black text-white rounded-lg font-semibold flex items-center justify-center transition-all"
               >
-                Buy Now
+                {t('Buy Now')}
               </button>
 
               <button
@@ -471,29 +493,29 @@ const ProductDetail = () => {
               <div className="flex items-center p-3 bg-gray-50 rounded-lg">
                 <FaTruck className="text-orange-500 mr-3" />
                 <div>
-                  <div className="font-semibold">Free Shipping</div>
-                  <div className="text-sm text-gray-600">Above ₹999</div>
+                  <div className="font-semibold">{t('Free Shipping')}</div>
+                  <div className="text-sm text-gray-600">{t('Above ₹999')}</div>
                 </div>
               </div>
               <div className="flex items-center p-3 bg-gray-50 rounded-lg">
                 <FaShieldAlt className="text-green-500 mr-3" />
                 <div>
-                  <div className="font-semibold">Safe & Secure</div>
-                  <div className="text-sm text-gray-600">Payment</div>
+                  <div className="font-semibold">{t('Safe & Secure')}</div>
+                  <div className="text-sm text-gray-600">{t('Payment')}</div>
                 </div>
               </div>
               <div className="flex items-center p-3 bg-gray-50 rounded-lg">
                 <FaExchangeAlt className="text-blue-500 mr-3" />
                 <div>
-                  <div className="font-semibold">Easy Returns</div>
-                  <div className="text-sm text-gray-600">7 Days</div>
+                  <div className="font-semibold">{t('Easy Returns')}</div>
+                  <div className="text-sm text-gray-600">{t('7 Days')}</div>
                 </div>
               </div>
               <div className="flex items-center p-3 bg-gray-50 rounded-lg">
                 <FaBox className="text-purple-500 mr-3" />
                 <div>
-                  <div className="font-semibold">Gift Ready</div>
-                  <div className="text-sm text-gray-600">Packaging</div>
+                  <div className="font-semibold">{t('Gift Ready')}</div>
+                  <div className="text-sm text-gray-600">{t('Packaging')}</div>
                 </div>
               </div>
             </div>
@@ -502,9 +524,9 @@ const ProductDetail = () => {
 
         {/* Product Description */}
         <div className="mt-8 bg-white rounded-xl shadow-lg p-6">
-          <h2 className="text-2xl font-bold mb-4">Product Description</h2>
+          <h2 className="text-2xl font-bold mb-4">{t('Product Description')}</h2>
           <div className="prose max-w-none">
-            <p className="text-gray-700 mb-4">{product.description}</p>
+            <p className="text-gray-700 mb-4">{localizedProduct.description}</p>
             
             {product.features && product.features.length > 0 && (
               <div className="mb-6">
@@ -538,40 +560,40 @@ const ProductDetail = () => {
         {/* Related Products */}
         {relatedProducts.length > 0 && (
           <div className="mt-8">
-            <h2 className="text-2xl font-bold mb-6">Related Products</h2>
+            <h2 className="text-2xl font-bold mb-6">{t('Related Products')}</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {relatedProducts.map((relatedProduct) => (
-                <div
-                  key={relatedProduct.id || relatedProduct._id}
-                  className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow cursor-pointer"
-                  onClick={() => navigate(productPath(relatedProduct))}
-                >
-                  <img
-                    src={typeof relatedProduct.images?.[0] === 'string' ? relatedProduct.images[0] : relatedProduct.images?.[0]?.url || relatedProduct.image}
-                    alt={relatedProduct.name}
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="p-4">
-                    <h3 className="font-semibold text-gray-900 line-clamp-1">
-                      {relatedProduct.name}
-                    </h3>
-                    <div className="flex items-center justify-between mt-2">
-                      <span className="text-lg font-bold text-orange-600">
-                        ₹{Number(relatedProduct.price || 0).toLocaleString('en-IN')}
-                      </span>
-                      <button 
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          // Quick add to cart logic here
-                        }}
-                        className="px-3 py-1 bg-orange-100 text-orange-600 rounded-full text-sm hover:bg-orange-200"
-                      >
-                        Add
-                      </button>
+              {relatedProducts.map((relatedProduct) => {
+                const relatedPricing = getProductPricing(relatedProduct, user, relatedProduct.variants?.[0]);
+                return (
+                  <div
+                    key={relatedProduct.id || relatedProduct._id}
+                    className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow cursor-pointer"
+                    onClick={() => navigate(productPath(relatedProduct))}
+                  >
+                    <img
+                      src={typeof relatedProduct.images?.[0] === 'string' ? relatedProduct.images[0] : relatedProduct.images?.[0]?.url || relatedProduct.image}
+                      alt={getLocalizedProduct(relatedProduct, language).name}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="p-4">
+                      <h3 className="font-semibold text-gray-900 line-clamp-1">
+                        {getLocalizedProduct(relatedProduct, language).name}
+                      </h3>
+                      <div className="flex items-center justify-between mt-2">
+                        <span className="text-lg font-bold text-orange-600">
+                          ₹{relatedPricing.price.toLocaleString('en-IN')} {relatedPricing.hasWholesalePrice ? t('Wholesale price') : t('MRP')}
+                        </span>
+                        <button
+                          onClick={(event) => event.stopPropagation()}
+                          className="px-3 py-1 bg-orange-100 text-orange-600 rounded-full text-sm hover:bg-orange-200"
+                        >
+                          {t('View details')}
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}

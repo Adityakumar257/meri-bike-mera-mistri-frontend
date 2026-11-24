@@ -8,6 +8,7 @@ import {
 } from 'react-icons/fa';
 // ✅ Import Services from centralized API
 import { ProductService, CategoryService } from '../../../../services/api';
+import { useLanguage } from '../../../../contexts/LanguageContext';
 
 const AddProduct = ({
   currentUser,
@@ -15,6 +16,7 @@ const AddProduct = ({
   setError, setSuccessMessage, setActiveSection,
   initialCategoryId, setInitialCategoryId
 }) => {
+  const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
@@ -258,13 +260,13 @@ const AddProduct = ({
   const renderFlags = () => {
     return (
       <div className="col-span-1 md:col-span-2 mt-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
-        <label className="block text-sm font-medium text-gray-700 mb-3">Classifications & Flags</label>
+        <label className="block text-sm font-medium text-gray-700 mb-3">{t('Classifications & Flags')}</label>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             
             {/* New Arrival - Available for ALL */}
             <label className="flex items-center space-x-2 cursor-pointer p-2 rounded hover:bg-gray-100 bg-white border border-gray-100">
                 <input type="checkbox" name="isNewArrival" checked={formData.isNewArrival} onChange={handleInputChange} className="h-4 w-4 text-green-600 rounded" />
-                <span className="text-sm font-medium text-gray-700">New Arrival</span>
+                <span className="text-sm font-medium text-gray-700">{t('New Arrival')}</span>
             </label>
 
             {/* Educational Toy Specific Flags */}
@@ -272,19 +274,19 @@ const AddProduct = ({
               <>
                  <label className="flex items-center space-x-2 cursor-pointer p-2 rounded hover:bg-gray-100">
                     <input type="checkbox" name="isOpenEndedPlay" checked={formData.isOpenEndedPlay} onChange={handleInputChange} className="h-4 w-4 text-purple-600 rounded" />
-                    <span className="text-sm">Open Ended Play</span>
+                    <span className="text-sm">{t('Open Ended Play')}</span>
                  </label>
                  <label className="flex items-center space-x-2 cursor-pointer p-2 rounded hover:bg-gray-100">
                     <input type="checkbox" name="isActionFigure" checked={formData.isActionFigure} onChange={handleInputChange} className="h-4 w-4 text-blue-600 rounded" />
-                    <span className="text-sm">Action Figure</span>
+                    <span className="text-sm">{t('Action Figure')}</span>
                  </label>
                  <label className="flex items-center space-x-2 cursor-pointer p-2 rounded hover:bg-gray-100">
                     <input type="checkbox" name="isEducationalToy" checked={formData.isEducationalToy} onChange={handleInputChange} className="h-4 w-4 text-green-600 rounded" />
-                    <span className="text-sm">Educational Toy</span>
+                    <span className="text-sm">{t('Educational Toy')}</span>
                  </label>
                  <label className="flex items-center space-x-2 cursor-pointer p-2 rounded hover:bg-gray-100 bg-yellow-50 border border-yellow-100">
                     <input type="checkbox" name="isFeatured" checked={formData.isFeatured} onChange={handleInputChange} className="h-4 w-4 text-yellow-600 rounded" />
-                    <span className="text-sm font-medium text-gray-700">Featured</span>
+                    <span className="text-sm font-medium text-gray-700">{t('Featured')}</span>
                  </label>
               </>
             )}
@@ -293,7 +295,7 @@ const AddProduct = ({
             {formData.type === 'robotic_kit' && (
                <label className="flex items-center space-x-2 cursor-pointer p-2 rounded hover:bg-gray-100">
                   <input type="checkbox" name="isRoboticKit" checked={formData.isRoboticKit} onChange={handleInputChange} className="h-4 w-4 text-orange-600 rounded" />
-                  <span className="text-sm">Robotic Kit</span>
+                  <span className="text-sm">{t('Robotic Kit')}</span>
                </label>
             )}
         </div>
@@ -304,9 +306,9 @@ const AddProduct = ({
   const renderTypeSpecificFields = () => {
     const commonPhysicalFields = (
         <>
-            <div><label className="block text-sm font-medium text-gray-700 mb-2">Material</label><div className="relative"><FaLayerGroup className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /><input type="text" name="material" value={formData.material} onChange={handleInputChange} className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-lg" placeholder="Material" /></div></div>
-            <div><label className="block text-sm font-medium text-gray-700 mb-2">Dimensions</label><div className="relative"><FaRuler className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /><input type="text" name="dimensions" value={formData.dimensions} onChange={handleInputChange} className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-lg" placeholder="Dimensions" /></div></div>
-            <div><label className="block text-sm font-medium text-gray-700 mb-2">Weight</label><div className="relative"><FaWeight className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /><input type="text" name="weight" value={formData.weight} onChange={handleInputChange} className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-lg" placeholder="Weight" /></div></div>
+            <div><label className="block text-sm font-medium text-gray-700 mb-2">{t('Material')}</label><div className="relative"><FaLayerGroup className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /><input type="text" name="material" value={formData.material} onChange={handleInputChange} className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-lg" placeholder={t('Material')} /></div></div>
+            <div><label className="block text-sm font-medium text-gray-700 mb-2">{t('Dimensions')}</label><div className="relative"><FaRuler className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /><input type="text" name="dimensions" value={formData.dimensions} onChange={handleInputChange} className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-lg" placeholder={t('Dimensions')} /></div></div>
+            <div><label className="block text-sm font-medium text-gray-700 mb-2">{t('Weight')}</label><div className="relative"><FaWeight className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /><input type="text" name="weight" value={formData.weight} onChange={handleInputChange} className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-lg" placeholder={t('Weight')} /></div></div>
         </>
     );
 
@@ -314,11 +316,11 @@ const AddProduct = ({
       case 'book':
         return (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div><label className="block text-sm font-medium text-gray-700 mb-2">Author</label><div className="relative"><FaUserTie className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /><input type="text" name="author" value={formData.author} onChange={handleInputChange} className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-lg" /></div></div>
-              <div><label className="block text-sm font-medium text-gray-700 mb-2">Publisher</label><div className="relative"><FaBuilding className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /><input type="text" name="publisher" value={formData.publisher} onChange={handleInputChange} className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-lg" /></div></div>
-              <div><label className="block text-sm font-medium text-gray-700 mb-2">ISBN</label><div className="relative"><FaBarcode className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /><input type="text" name="isbn" value={formData.isbn} onChange={handleInputChange} className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-lg" /></div></div>
-              <div><label className="block text-sm font-medium text-gray-700 mb-2">Pages</label><input type="number" name="pages" value={formData.pages} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg" /></div>
-              <div><label className="block text-sm font-medium text-gray-700 mb-2">Language</label><div className="relative"><FaLanguage className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /><input type="text" name="language" value={formData.language} onChange={handleInputChange} className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-lg" /></div></div>
+              <div><label className="block text-sm font-medium text-gray-700 mb-2">{t('Author')}</label><div className="relative"><FaUserTie className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /><input type="text" name="author" value={formData.author} onChange={handleInputChange} className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-lg" /></div></div>
+              <div><label className="block text-sm font-medium text-gray-700 mb-2">{t('Publisher')}</label><div className="relative"><FaBuilding className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /><input type="text" name="publisher" value={formData.publisher} onChange={handleInputChange} className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-lg" /></div></div>
+              <div><label className="block text-sm font-medium text-gray-700 mb-2">{t('ISBN')}</label><div className="relative"><FaBarcode className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /><input type="text" name="isbn" value={formData.isbn} onChange={handleInputChange} className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-lg" /></div></div>
+              <div><label className="block text-sm font-medium text-gray-700 mb-2">{t('Pages')}</label><input type="number" name="pages" value={formData.pages} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg" /></div>
+              <div><label className="block text-sm font-medium text-gray-700 mb-2">{t('Language')}</label><div className="relative"><FaLanguage className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /><input type="text" name="language" value={formData.language} onChange={handleInputChange} className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-lg" /></div></div>
               {renderFlags()}
           </div>
         );
@@ -334,11 +336,11 @@ const AddProduct = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {commonPhysicalFields}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Compatible Bike Brands</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{t('Compatible Bike Brands')}</label>
               <input type="text" name="compatibleBikeBrands" value={formData.compatibleBikeBrands} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="Honda, Hero, Bajaj" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Compatible Bike Models</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{t('Compatible Bike Models')}</label>
               <input type="text" name="compatibleBikeModels" value={formData.compatibleBikeModels} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="Splendor Plus, Shine 125" />
             </div>
             {renderFlags()}
@@ -366,10 +368,10 @@ const AddProduct = ({
       <div className="max-w-6xl mx-auto">
         <div className="mb-8 flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-800">{editingId ? `Edit ${getReadableType(formData.type)}` : 'Add New Product'}</h1>
-              <p className="text-gray-600 mt-1">Select the type of product you want to add</p>
+              <h1 className="text-2xl font-bold text-gray-800">{editingId ? `${t('Edit')} ${t(getReadableType(formData.type))}` : t('Add New Product')}</h1>
+                <p className="text-gray-600 mt-1">{t('Select the type of product you want to add')}</p>
             </div>
-            <button onClick={() => { setActiveSection('products'); setEditingId(null); }} className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 flex items-center"><FaArrowLeft className="mr-2" /> Back to Products</button>
+              <button onClick={() => { setActiveSection('products'); setEditingId(null); }} className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 flex items-center"><FaArrowLeft className="mr-2" /> {t('Back to Products')}</button>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8">
@@ -377,8 +379,8 @@ const AddProduct = ({
                 <div key={card.id} onClick={() => handleTypeSelect(card.id)} className={`cursor-pointer border rounded-xl p-4 transition-all duration-200 hover:shadow-md ${activeForm === card.id ? `${card.color} ring-2 ring-offset-1 ring-blue-400` : 'bg-white border-gray-200 hover:border-blue-300'}`}>
                     <div className="flex flex-col items-center text-center">
                         {card.icon}
-                        <h3 className="font-semibold text-gray-800">{card.label}</h3>
-                        <p className="text-xs text-gray-500 mt-1">{card.count} Items</p>
+                        <h3 className="font-semibold text-gray-800">{t(card.label)}</h3>
+                        <p className="text-xs text-gray-500 mt-1">{card.count} {t('Items')}</p>
                     </div>
                 </div>
             ))}
@@ -386,42 +388,42 @@ const AddProduct = ({
 
         <form onSubmit={handleSubmit} className="space-y-6">
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <h2 className="text-lg font-semibold text-gray-800 mb-6 pb-4 border-b border-gray-200">Basic Information ({getReadableType(formData.type)})</h2>
+                <h2 className="text-lg font-semibold text-gray-800 mb-6 pb-4 border-b border-gray-200">{t('Basic Information')} ({t(getReadableType(formData.type))})</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div><label className="block text-sm font-medium text-gray-700 mb-2">Product Name *</label><input type="text" name="name" value={formData.name} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg" required /></div>
-                    <div><label className="block text-sm font-medium text-gray-700 mb-2">Product Title</label><input type="text" name="title" value={formData.title} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg" /></div>
-                    <div><label className="block text-sm font-medium text-gray-700 mb-2">SKU / Part Number {formData.type === 'spare_part' ? '*' : ''}</label><input type="text" name="sku" value={formData.sku} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg" required={formData.type === 'spare_part'} /></div>
-                    <div><label className="block text-sm font-medium text-gray-700 mb-2">Category / Subcategory *</label><select name="category" value={formData.category} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg" required><option value="">Select Category</option>{categories.map(cat => <option key={cat._id} value={cat._id}>{cat.parent?.name ? `${cat.parent.name} / ${cat.name}` : cat.name}</option>)}</select></div>
-                    <div><label className="block text-sm font-medium text-gray-700 mb-2">Brand</label><select name="brand" value={formData.brand} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg"><option value="">Select Brand</option>{brands.map(brand => <option key={brand._id} value={brand._id}>{brand.name}</option>)}</select></div>
-                    <div><label className="block text-sm font-medium text-gray-700 mb-2">Age Group</label><select name="ageGroup" value={formData.ageGroup} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg"><option value="">Select Age Group</option>{ageGroups.map(group => <option key={group._id} value={group._id}>{group.name}</option>)}</select></div>
+                    <div><label className="block text-sm font-medium text-gray-700 mb-2">{t('Product Name')} *</label><input type="text" name="name" value={formData.name} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg" required /></div>
+                    <div><label className="block text-sm font-medium text-gray-700 mb-2">{t('Product Title')}</label><input type="text" name="title" value={formData.title} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg" /></div>
+                    <div><label className="block text-sm font-medium text-gray-700 mb-2">{t('SKU / Part Number')} {formData.type === 'spare_part' ? '*' : ''}</label><input type="text" name="sku" value={formData.sku} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg" required={formData.type === 'spare_part'} /></div>
+                    <div><label className="block text-sm font-medium text-gray-700 mb-2">{t('Category / Subcategory')} *</label><select name="category" value={formData.category} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg" required><option value="">{t('Select Category')}</option>{categories.map(cat => <option key={cat._id} value={cat._id}>{cat.parent?.name ? `${t(cat.parent.name)} / ${t(cat.name)}` : t(cat.name)}</option>)}</select></div>
+                    <div><label className="block text-sm font-medium text-gray-700 mb-2">{t('Brand')}</label><select name="brand" value={formData.brand} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg"><option value="">{t('Select Brand')}</option>{brands.map(brand => <option key={brand._id} value={brand._id}>{brand.name}</option>)}</select></div>
+                    <div><label className="block text-sm font-medium text-gray-700 mb-2">{t('Age Group')}</label><select name="ageGroup" value={formData.ageGroup} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg"><option value="">{t('Select Age Group')}</option>{ageGroups.map(group => <option key={group._id} value={group._id}>{group.name}</option>)}</select></div>
                 </div>
-                <div className="mt-6"><label className="block text-sm font-medium text-gray-700 mb-2">Description</label><textarea name="description" value={formData.description} onChange={handleInputChange} rows="4" className="w-full px-4 py-3 border border-gray-300 rounded-lg" /></div>
-                <div className="mt-8"><h3 className="text-md font-semibold text-gray-800 mb-4">Type Specific Details</h3>{renderTypeSpecificFields()}</div>
+                <div className="mt-6"><label className="block text-sm font-medium text-gray-700 mb-2">{t('Description')}</label><textarea name="description" value={formData.description} onChange={handleInputChange} rows="4" className="w-full px-4 py-3 border border-gray-300 rounded-lg" /></div>
+                <div className="mt-8"><h3 className="text-md font-semibold text-gray-800 mb-4">{t('Type Specific Details')}</h3>{renderTypeSpecificFields()}</div>
             </div>
 
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <h2 className="text-lg font-semibold text-gray-800 mb-6 pb-4 border-b border-gray-200">Pricing</h2>
+                <h2 className="text-lg font-semibold text-gray-800 mb-6 pb-4 border-b border-gray-200">{t('Pricing')}</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div><label className="block text-sm font-medium text-gray-700 mb-2">MRP (₹) *</label><div className="relative"><FaDollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /><input type="number" name="price" value={formData.price} onChange={handleInputChange} step="0.01" min="0" className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-lg" required /></div></div>
-                    <div><label className="block text-sm font-medium text-gray-700 mb-2">Discount (%)</label><div className="relative"><FaPercent className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /><input type="number" name="discount" value={formData.discount} onChange={handleInputChange} min="0" max="100" className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-lg" /></div></div>
-                    <div><label className="block text-sm font-medium text-gray-700 mb-2">Current Price (₹)</label><input type="number" name="currentPrice" value={formData.currentPrice} readOnly className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-green-50 font-semibold" /></div>
-                    <div><label className="block text-sm font-medium text-gray-700 mb-2">Wholesale Price (₹) {formData.type === 'spare_part' ? '*' : ''}</label><input type="number" name="wholesalePrice" value={formData.wholesalePrice} onChange={handleInputChange} step="0.01" min="0" max={formData.price || undefined} className="w-full px-4 py-3 border border-gray-300 rounded-lg" required={formData.type === 'spare_part'} /></div>
-                    <div><label className="block text-sm font-medium text-gray-700 mb-2">Bulk Discount (%)</label><input type="number" name="bulkDiscountPercent" value={formData.bulkDiscountPercent} onChange={handleInputChange} min="0" max="100" step="0.1" className="w-full px-4 py-3 border border-gray-300 rounded-lg" /></div>
+                    <div><label className="block text-sm font-medium text-gray-700 mb-2">{t('MRP (₹)')} *</label><div className="relative"><FaDollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /><input type="number" name="price" value={formData.price} onChange={handleInputChange} step="0.01" min="0" className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-lg" required /></div></div>
+                    <div><label className="block text-sm font-medium text-gray-700 mb-2">{t('Discount (%)')}</label><div className="relative"><FaPercent className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /><input type="number" name="discount" value={formData.discount} onChange={handleInputChange} min="0" max="100" className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-lg" /></div></div>
+                    <div><label className="block text-sm font-medium text-gray-700 mb-2">{t('Current Price (₹)')}</label><input type="number" name="currentPrice" value={formData.currentPrice} readOnly className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-green-50 font-semibold" /></div>
+                    <div><label className="block text-sm font-medium text-gray-700 mb-2">{t('Wholesale Price (₹)')} {formData.type === 'spare_part' ? '*' : ''}</label><input type="number" name="wholesalePrice" value={formData.wholesalePrice} onChange={handleInputChange} step="0.01" min="0" max={formData.price || undefined} className="w-full px-4 py-3 border border-gray-300 rounded-lg" required={formData.type === 'spare_part'} /></div>
+                    <div><label className="block text-sm font-medium text-gray-700 mb-2">{t('Bulk Discount (%)')}</label><input type="number" name="bulkDiscountPercent" value={formData.bulkDiscountPercent} onChange={handleInputChange} min="0" max="100" step="0.1" className="w-full px-4 py-3 border border-gray-300 rounded-lg" /></div>
                 </div>
             </div>
 
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <h2 className="text-lg font-semibold text-gray-800 mb-6 pb-4 border-b border-gray-200">Images</h2>
-                <div className="mb-6"><label className="cursor-pointer px-6 py-3 bg-blue-600 text-white rounded-lg flex items-center w-fit"><FaCamera className="mr-2" /> Choose Images <input type="file" accept="image/*" multiple onChange={handleImageChange} className="hidden" /></label></div>
+                <h2 className="text-lg font-semibold text-gray-800 mb-6 pb-4 border-b border-gray-200">{t('Images')}</h2>
+                <div className="mb-6"><label className="cursor-pointer px-6 py-3 bg-blue-600 text-white rounded-lg flex items-center w-fit"><FaCamera className="mr-2" /> {t('Choose Images')} <input type="file" accept="image/*" multiple onChange={handleImageChange} className="hidden" /></label></div>
                 {imagePreviews.length > 0 && <div className="grid grid-cols-5 gap-4">{imagePreviews.map((preview, index) => (<div key={index} className="relative aspect-square"><img src={preview} alt="prev" className="w-full h-full object-cover rounded-lg" /><button type="button" onClick={() => removeImage(index)} className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1"><FaTimes size={10} /></button></div>))}</div>}
             </div>
 
             {/* ✅ NEW RATING & VIEWS SECTION */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <h2 className="text-lg font-semibold text-gray-800 mb-6 pb-4 border-b border-gray-200">Rating & Views</h2>
+                <h2 className="text-lg font-semibold text-gray-800 mb-6 pb-4 border-b border-gray-200">{t('Rating & Views')}</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Rating (0-5)</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">{t('Rating (0-5)')}</label>
                         <div className="flex items-center space-x-1">
                             {[1, 2, 3, 4, 5].map((star) => (
                                 <button
@@ -458,7 +460,7 @@ const AddProduct = ({
                     </div>
                     
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Rating Count</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">{t('Rating Count')}</label>
                         <div className="relative">
                             <FaStar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                             <input
@@ -473,7 +475,7 @@ const AddProduct = ({
                     </div>
                     
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Views</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">{t('Views')}</label>
                         <div className="relative">
                             <FaEye className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                             <input
@@ -490,37 +492,37 @@ const AddProduct = ({
             </div>
 
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <h2 className="text-lg font-semibold text-gray-800 mb-6 pb-4 border-b border-gray-200">Status & Stock</h2>
+                <h2 className="text-lg font-semibold text-gray-800 mb-6 pb-4 border-b border-gray-200">{t('Status & Stock')}</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div><label className="block text-sm font-medium text-gray-700 mb-2">Stock Quantity</label><input type="number" name="stockQuantity" value={formData.stockQuantity} onChange={handleInputChange} min="0" className="w-full px-4 py-3 border border-gray-300 rounded-lg" /></div>
-                    <div><label className="block text-sm font-medium text-gray-700 mb-2">Minimum Order Quantity</label><input type="number" name="minimumOrderQuantity" value={formData.minimumOrderQuantity} onChange={handleInputChange} min="1" className="w-full px-4 py-3 border border-gray-300 rounded-lg" /></div>
+                    <div><label className="block text-sm font-medium text-gray-700 mb-2">{t('Stock Quantity')}</label><input type="number" name="stockQuantity" value={formData.stockQuantity} onChange={handleInputChange} min="0" className="w-full px-4 py-3 border border-gray-300 rounded-lg" /></div>
+                    <div><label className="block text-sm font-medium text-gray-700 mb-2">{t('Minimum Order Quantity')}</label><input type="number" name="minimumOrderQuantity" value={formData.minimumOrderQuantity} onChange={handleInputChange} min="1" className="w-full px-4 py-3 border border-gray-300 rounded-lg" /></div>
                     
                     {/* ✅ STOCK STATUS FIELD ADDED HERE */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Stock Status</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">{t('Stock Status')}</label>
                         <select 
                             name="stockStatus" 
                             value={formData.stockStatus} 
                             onChange={handleInputChange} 
                             className="w-full px-4 py-3 border border-gray-300 rounded-lg"
                         >
-                            <option value="In Stock">In Stock</option>
-                            <option value="Out of Stock">Out of Stock</option>
-                            <option value="Limited Stock">Limited Stock</option>
-                            <option value="In stock">In stock (lowercase)</option>
-                            <option value="Out of stock">Out of stock (lowercase)</option>
-                            <option value="Low stock">Low stock</option>
+                            <option value="In Stock">{t('In Stock')}</option>
+                            <option value="Out of Stock">{t('Out of Stock')}</option>
+                            <option value="Limited Stock">{t('Limited Stock')}</option>
+                            <option value="In stock">{t('In stock')}</option>
+                            <option value="Out of stock">{t('Out of stock')}</option>
+                            <option value="Low stock">{t('Low stock')}</option>
                         </select>
                     </div>
                     
-                    <div><label className="block text-sm font-medium text-gray-700 mb-2">Status</label><select name="status" value={formData.status} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg"><option value="active">Active</option><option value="inactive">Inactive</option><option value="draft">Draft</option></select></div>
-                    <div className="col-span-2"><label className="block text-sm font-medium text-gray-700 mb-2">Tags</label><div className="relative"><FaTag className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /><input type="text" name="tags" value={formData.tags} onChange={handleInputChange} className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-lg" placeholder="comma separated" /></div></div>
+                    <div><label className="block text-sm font-medium text-gray-700 mb-2">{t('Status')}</label><select name="status" value={formData.status} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg"><option value="active">{t('Active')}</option><option value="inactive">{t('Inactive')}</option><option value="draft">{t('Draft')}</option></select></div>
+                    <div className="col-span-2"><label className="block text-sm font-medium text-gray-700 mb-2">{t('Tags')}</label><div className="relative"><FaTag className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /><input type="text" name="tags" value={formData.tags} onChange={handleInputChange} className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-lg" placeholder={t('comma separated')} /></div></div>
                 </div>
             </div>
 
             <div className="flex justify-end space-x-4">
-                <button type="button" onClick={() => { setEditingId(null); setActiveSection('products'); }} className="px-6 py-3 border border-gray-300 rounded-lg text-gray-700">Cancel</button>
-                <button type="submit" disabled={loading || uploading} className="px-6 py-3 bg-blue-600 text-white rounded-lg flex items-center">{loading ? <FaSpinner className="animate-spin mr-2" /> : <FaSave className="mr-2" />} {editingId ? 'Update' : 'Create'}</button>
+                <button type="button" onClick={() => { setEditingId(null); setActiveSection('products'); }} className="px-6 py-3 border border-gray-300 rounded-lg text-gray-700">{t('Cancel')}</button>
+                <button type="submit" disabled={loading || uploading} className="px-6 py-3 bg-blue-600 text-white rounded-lg flex items-center">{loading ? <FaSpinner className="animate-spin mr-2" /> : <FaSave className="mr-2" />} {editingId ? t('Update') : t('Create')}</button>
             </div>
         </form>
       </div>

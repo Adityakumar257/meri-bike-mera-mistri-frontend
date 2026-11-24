@@ -4,9 +4,11 @@ import { useAuth } from '../../contexts/AuthContext';
 import { FaSpinner, FaExclamationTriangle, FaEye, FaEyeSlash } from 'react-icons/fa';
 // ✅ Import AdminService from centralized API
 import { AdminService } from '../../services/api';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const AdminLogin = () => {
   const { login, user, loading } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -42,7 +44,7 @@ const AdminLogin = () => {
         const userRole = response.data.user.role; 
 
         if (!['admin', 'superadmin'].includes(userRole)) {
-          setError('Access Denied: You do not have administrator privileges.');
+          setError(t('Access Denied: You do not have administrator privileges.'));
           setIsLoading(false);
           return;
         }
@@ -52,7 +54,7 @@ const AdminLogin = () => {
         navigate('/postdata');
       }
     } catch (err) {
-      const msg = err.message || 'Login failed. Please check your credentials.';
+      const msg = err.response?.data?.message || err.message || t('Login failed. Please check your credentials.');
       setError(msg);
       
       if (err.status === 0) {
@@ -89,8 +91,8 @@ const AdminLogin = () => {
             alt="Meri Bike Mera Mistri"
             className="mx-auto mb-3 h-24 w-24 rounded-lg bg-white p-2 object-contain"
           />
-          <h1 className="text-2xl font-bold text-white mb-1">Admin Portal</h1>
-          <p className="text-blue-100 text-sm">Secure Access</p>
+          <h1 className="text-2xl font-bold text-white mb-1">{t('Admin Portal')}</h1>
+          <p className="text-blue-100 text-sm">{t('Secure Access')}</p>
         </div>
 
         <div className="p-8">
@@ -98,28 +100,28 @@ const AdminLogin = () => {
             
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium text-[#17243b] mb-2">Admin Email</label>
+              <label className="block text-sm font-medium text-[#17243b] mb-2">{t('Admin Email')}</label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
                 className="w-full bg-white text-[#17243b] border border-[#dce5ef] rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#0b4b96]"
-                placeholder="name@company.com"
+                placeholder={t('name@company.com')}
                 required
               />
             </div>
 
             {/* Password */}
             <div className="relative">
-              <label className="block text-sm font-medium text-[#17243b] mb-2">Password</label>
+              <label className="block text-sm font-medium text-[#17243b] mb-2">{t('Password')}</label>
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
                 className="w-full bg-white text-[#17243b] border border-[#dce5ef] rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#0b4b96]"
-                placeholder="Enter your password"
+                placeholder={t('Enter your password')}
                 required
               />
               <button
@@ -134,7 +136,7 @@ const AdminLogin = () => {
             {/* Network Info */}
             <div className="bg-[#f3f6fa] rounded-lg p-3 border border-[#dce5ef]">
               <p className="text-sm text-[#17243b]">
-                Sign in using an active administrator account.
+                {t('Sign in using an active administrator account.')}
               </p>
             </div>
 
@@ -149,7 +151,7 @@ const AdminLogin = () => {
                     onClick={testNetworkConnection}
                     className="text-xs text-[#0b4b96] hover:text-[#07346f] mt-2 underline"
                   >
-                    Test backend connection
+                    {t('Test backend connection')}
                   </button>
                 </div>
               </div>
@@ -161,7 +163,7 @@ const AdminLogin = () => {
               disabled={isLoading}
               className="w-full bg-[#0b4b96] hover:bg-[#07346f] text-white font-bold py-3 rounded-lg transition duration-200 flex items-center justify-center disabled:opacity-50"
             >
-              {isLoading ? <FaSpinner className="animate-spin mr-2" /> : 'Login to Dashboard'}
+              {isLoading ? <FaSpinner className="animate-spin mr-2" /> : t('Login to Dashboard')}
             </button>
 
             {/* Test Connection Button */}
@@ -171,7 +173,7 @@ const AdminLogin = () => {
               disabled={isLoading}
               className="w-full bg-white hover:bg-[#f3f6fa] text-[#07346f] border border-[#dce5ef] py-3 rounded-lg transition duration-200 flex items-center justify-center text-sm"
             >
-              Test Backend Connection
+              {t('Test Backend Connection')}
             </button>
 
           </form>

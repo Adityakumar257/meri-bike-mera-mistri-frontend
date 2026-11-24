@@ -5,6 +5,7 @@ import {
 } from 'react-icons/fa';
 // ✅ Import CategoryService
 import { CategoryService, ProductService } from '../../services/api';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const CategoryManager = ({
     fetchCategories: refreshParentCategories,
@@ -13,6 +14,7 @@ const CategoryManager = ({
     setEditingId,
     setInitialProductCategoryId
 }) => {
+    const { t } = useLanguage();
     // ❌ Removed API_BASE_URL and getAuthHeaders (handled by api.js)
 
     const [showCategoryForm, setShowCategoryForm] = useState(false);
@@ -104,7 +106,7 @@ const CategoryManager = ({
         e.preventDefault();
         
         if (!newCategory.name.trim()) {
-            alert('Please enter category name');
+            alert(t('Please enter category name'));
             return;
         }
         
@@ -280,14 +282,14 @@ const CategoryManager = ({
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-800">Category Manager</h1>
-                    <p className="text-gray-600 mt-2">Manage Brands, Categories, and Age Groups</p>
+                    <h1 className="text-2xl font-bold text-gray-800">{t('Category Manager')}</h1>
+                    <p className="text-gray-600 mt-2">{t('Manage Brands, Categories, and Age Groups')}</p>
                 </div>
                 <div className="flex flex-col md:flex-row items-stretch md:items-center gap-2 w-full md:w-auto">
                     <div className="relative flex-1 md:w-48">
                         <input
                             type="text"
-                            placeholder="Search categories..."
+                            placeholder={t('Search categories...')}
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -299,10 +301,10 @@ const CategoryManager = ({
                         onChange={(e) => setFilterType(e.target.value)}
                         className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                     >
-                        <option value="all">All Types</option>
-                        <option value="brand">Brands</option>
-                        <option value="category">Categories</option>
-                        <option value="age-group">Age Groups</option>
+                        <option value="all">{t('All Types')}</option>
+                        <option value="brand">{t('Brands')}</option>
+                        <option value="category">{t('Categories')}</option>
+                        <option value="age-group">{t('Age Groups')}</option>
                     </select>
                     <button
                         onClick={() => {
@@ -365,9 +367,9 @@ const CategoryManager = ({
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                     required
                                 >
-                                    <option value="category">Category</option>
-                                    <option value="brand">Brand</option>
-                                    <option value="age-group">Age Group</option>
+                                    <option value="category">{t('Category')}</option>
+                                    <option value="brand">{t('Brand')}</option>
+                                    <option value="age-group">{t('Age Group')}</option>
                                 </select>
                             </div>
                             
@@ -389,7 +391,7 @@ const CategoryManager = ({
                                         });
                                     }}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                    placeholder="Enter name"
+                                    placeholder={t('Enter name')}
                                     required
                                 />
                             </div>
@@ -403,7 +405,7 @@ const CategoryManager = ({
                                     value={newCategory.slug}
                                     onChange={(e) => setNewCategory({...newCategory, slug: e.target.value})}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                    placeholder="auto-generated-slug"
+                                    placeholder={t('auto-generated-slug')}
                                 />
                             </div>
                             
@@ -415,7 +417,7 @@ const CategoryManager = ({
                                     value={newCategory.shortDescription}
                                     onChange={(e) => setNewCategory({...newCategory, shortDescription: e.target.value})}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                    placeholder="Enter description"
+                                    placeholder={t('Enter description')}
                                     rows="3"
                                 />
                             </div>
@@ -431,7 +433,7 @@ const CategoryManager = ({
                                         onChange={(e) => handleSelectParent(e.target.value || null)}
                                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                     >
-                                        <option value="">None (Main Category)</option>
+                                        <option value="">{t('None (Main Category)')}</option>
                                         {categories
                                             .filter(cat => cat.type === 'category' && cat._id !== editingId)
                                             .map(cat => (
@@ -456,7 +458,7 @@ const CategoryManager = ({
                                         value={newCategory.menuOrder}
                                         onChange={(e) => setNewCategory({...newCategory, menuOrder: parseInt(e.target.value) || 0})}
                                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                        placeholder="0"
+                                        placeholder={t('0')}
                                         min="0"
                                     />
                                 </div>
@@ -470,7 +472,7 @@ const CategoryManager = ({
                                         value={newCategory.badgeText}
                                         onChange={(e) => setNewCategory({...newCategory, badgeText: e.target.value})}
                                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                        placeholder="New, Sale, etc."
+                                        placeholder={t('New, Sale, etc.')}
                                     />
                                 </div>
                             </div>
@@ -484,7 +486,7 @@ const CategoryManager = ({
                                     value={newCategory.icon}
                                     onChange={(e) => setNewCategory({...newCategory, icon: e.target.value})}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                    placeholder="fas fa-tag"
+                                    placeholder={t('fas fa-tag')}
                                 />
                             </div>
                             
@@ -496,7 +498,7 @@ const CategoryManager = ({
                                         onChange={(e) => setNewCategory({...newCategory, isActive: e.target.checked})}
                                         className="h-4 w-4 text-blue-600 rounded focus:ring-blue-500 mr-2"
                                     />
-                                    <span className="text-sm text-gray-700">Active</span>
+                                    <span className="text-sm text-gray-700">{t('Active')}</span>
                                 </label>
                                 
                                 <label className="flex items-center">
@@ -506,7 +508,7 @@ const CategoryManager = ({
                                         onChange={(e) => setNewCategory({...newCategory, featured: e.target.checked})}
                                         className="h-4 w-4 text-blue-600 rounded focus:ring-blue-500 mr-2"
                                     />
-                                    <span className="text-sm text-gray-700">Featured</span>
+                                    <span className="text-sm text-gray-700">{t('Featured')}</span>
                                 </label>
                                 
                                 <label className="flex items-center">
@@ -516,7 +518,7 @@ const CategoryManager = ({
                                         onChange={(e) => setNewCategory({...newCategory, showInMenu: e.target.checked})}
                                         className="h-4 w-4 text-blue-600 rounded focus:ring-blue-500 mr-2"
                                     />
-                                    <span className="text-sm text-gray-700">Show in Menu</span>
+                                    <span className="text-sm text-gray-700">{t('Show in Menu')}</span>
                                 </label>
                             </div>
                             
@@ -544,7 +546,7 @@ const CategoryManager = ({
                     <div className="flex items-center justify-between gap-4 p-4 border-b border-gray-200">
                         <div>
                             <h2 className="text-lg font-semibold text-gray-800">{selectedCategory.name} Products</h2>
-                            <p className="text-sm text-gray-500">All product statuses in this category</p>
+                            <p className="text-sm text-gray-500">{t('All product statuses in this category')}</p>
                         </div>
                         <div className="flex gap-2">
                             {selectedCategory.isActive && (
@@ -552,7 +554,7 @@ const CategoryManager = ({
                                     <FaPlus className="inline mr-2" /> Add Product
                                 </button>
                             )}
-                            <button onClick={() => setSelectedCategory(null)} className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg" aria-label="Close products">
+                            <button onClick={() => setSelectedCategory(null)} className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg" aria-label={t('Close products')}>
                                 <FaTimes />
                             </button>
                         </div>
@@ -565,11 +567,11 @@ const CategoryManager = ({
                             <table className="min-w-full divide-y divide-gray-200">
                                 <thead className="bg-gray-50">
                                     <tr>
-                                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Product</th>
-                                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">SKU</th>
-                                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Stock</th>
-                                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                                        <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Action</th>
+                                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('Product')}</th>
+                                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('SKU')}</th>
+                                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('Stock')}</th>
+                                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('Status')}</th>
+                                        <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">{t('Action')}</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-100">
@@ -597,7 +599,7 @@ const CategoryManager = ({
                             </table>
                         </div>
                     ) : (
-                        !productsError && <p className="p-6 text-sm text-gray-500">No products in this category yet.</p>
+                        !productsError && <p className="p-6 text-sm text-gray-500">{t('No products in this category yet.')}</p>
                     )}
                 </section>
             )}
@@ -606,7 +608,7 @@ const CategoryManager = ({
             {loading ? (
                 <div className="flex flex-col items-center justify-center py-12">
                     <FaSpinner className="animate-spin text-blue-600 text-3xl mb-4" />
-                    <p className="text-gray-600">Loading categories...</p>
+                    <p className="text-gray-600">{t('Loading categories...')}</p>
                 </div>
             ) : (
                 <div className="space-y-6">
@@ -653,7 +655,7 @@ const CategoryManager = ({
                                         <div className="inline-block p-3 rounded-full bg-gray-100 mb-3">
                                             {getTypeIcon(type)}
                                         </div>
-                                        <p className="text-gray-600 mb-2">No {getTypeLabel(type).toLowerCase()} found</p>
+                                        <p className="text-gray-600 mb-2">{t('No')} {t(getTypeLabel(type).toLowerCase())} {t('found')}</p>
                                         <button
                                             onClick={() => {
                                                 setNewCategory({...newCategory, type});
@@ -691,16 +693,16 @@ const CategoryManager = ({
                                                         )}
                                                         
                                                         <div className="flex items-center justify-between text-xs text-gray-500">
-                                                            <span>Order: {cat.order || 0}</span>
+                                                            <span>{t('Order')}: {cat.order || 0}</span>
                                                             <span className="font-mono">/{cat.slug}</span>
                                                         </div>
                                                         
                                                         {type === 'category' && (
                                                             <dl className="grid grid-cols-2 gap-x-3 gap-y-1 mt-3 text-xs text-gray-600">
-                                                                <div><dt className="inline">Total: </dt><dd className="inline font-semibold">{cat.totalProducts || 0}</dd></div>
-                                                                <div><dt className="inline">Active: </dt><dd className="inline font-semibold">{cat.activeProducts || 0}</dd></div>
-                                                                <div><dt className="inline">Inactive: </dt><dd className="inline font-semibold">{cat.inactiveProducts || 0}</dd></div>
-                                                                <div><dt className="inline">Out of stock: </dt><dd className="inline font-semibold">{cat.outOfStockProducts || 0}</dd></div>
+                                                                <div><dt className="inline">{t('Total')}: </dt><dd className="inline font-semibold">{cat.totalProducts || 0}</dd></div>
+                                                                <div><dt className="inline">{t('Active')}: </dt><dd className="inline font-semibold">{cat.activeProducts || 0}</dd></div>
+                                                                <div><dt className="inline">{t('Inactive')}: </dt><dd className="inline font-semibold">{cat.inactiveProducts || 0}</dd></div>
+                                                                <div><dt className="inline">{t('Out of stock')}: </dt><dd className="inline font-semibold">{cat.outOfStockProducts || 0}</dd></div>
                                                             </dl>
                                                         )}
                                                         {type !== 'category' && cat.productCount !== undefined && (

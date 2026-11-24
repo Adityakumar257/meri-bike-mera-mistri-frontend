@@ -476,6 +476,7 @@ import {
 import { useCart } from '../contexts/CartContext';
 import { useWishlist } from '../contexts/WishlistContext';
 import { useAuth } from '../contexts/AuthContext';
+import { getLocalizedProduct, useLanguage } from '../contexts/LanguageContext';
 import toast from 'react-hot-toast';
 
 // Loading skeleton
@@ -498,26 +499,27 @@ const CartItemSkeleton = () => (
 // Empty Cart Component
 const EmptyCart = memo(() => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   
   return (
     <div className="text-center bg-white rounded-2xl shadow p-12 max-w-2xl mx-auto">
       <div className="w-32 h-32 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
         <FiShoppingBag className="w-16 h-16 text-orange-600" />
       </div>
-      <h1 className="text-4xl font-bold text-gray-900 mb-4">Your cart is empty</h1>
-      <p className="text-xl text-gray-600 mb-8">Start adding amazing products!</p>
+      <h1 className="text-4xl font-bold text-gray-900 mb-4">{t('Your cart is empty')}</h1>
+      <p className="text-xl text-gray-600 mb-8">{t('Start adding amazing products!')}</p>
       <div className="flex flex-col sm:flex-row gap-4 justify-center">
         <button
           onClick={() => navigate('/category/all')}
           className="bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-colors duration-200"
         >
-          Shop Toys
+          {t('Shop Parts')}
         </button>
         <button
           onClick={() => navigate('/')}
           className="bg-white border-2 border-orange-600 text-orange-600 hover:bg-orange-50 px-8 py-4 rounded-xl font-semibold text-lg transition-colors duration-200"
         >
-          Continue Shopping
+          {t('Continue shopping')}
         </button>
       </div>
     </div>
@@ -526,10 +528,11 @@ const EmptyCart = memo(() => {
 
 // Cart Item Component
 const CartItem = memo(({ item, onQuantityChange, onRemoveItem, onAddToWishlist, updatingId }) => {
+  const { language, t } = useLanguage();
   const safeItem = {
     id: item?.id || '',
     type: item?.type || 'toy',
-    name: item?.name || 'Unnamed Product',
+    name: getLocalizedProduct(item, language).name || item?.name || 'Unnamed Product',
     price: Number(item?.currentPrice || item?.price || 0),
     quantity: Number(item?.quantity || 1),
     minimumOrderQuantity: Math.max(1, Number(item?.minimumOrderQuantity) || 1),
@@ -550,7 +553,7 @@ const CartItem = memo(({ item, onQuantityChange, onRemoveItem, onAddToWishlist, 
   };
 
   const handleRemove = () => {
-    if (window.confirm('Remove this item from cart?')) {
+    if (window.confirm(t('Remove this item from cart?'))) {
       onRemoveItem(safeItem.id, safeItem.type);
     }
   };
@@ -584,7 +587,7 @@ const CartItem = memo(({ item, onQuantityChange, onRemoveItem, onAddToWishlist, 
               </h3>
               <div className="mb-3">
                 <span className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm">
-                  {safeItem.type === 'book' ? 'Book' : safeItem.type === 'spare_part' ? 'Spare Part' : 'Product'}
+                  {t(safeItem.type === 'book' ? 'Book' : safeItem.type === 'spare_part' ? 'Spare Part' : 'Product')}
                 </span>
               </div>
             </div>
@@ -595,7 +598,7 @@ const CartItem = memo(({ item, onQuantityChange, onRemoveItem, onAddToWishlist, 
                   ₹{itemTotal.toLocaleString('en-IN')}
                 </div>
                 <div className="text-gray-600 mt-1">
-                  ₹{safeItem.price.toLocaleString('en-IN')} each
+                  ₹{safeItem.price.toLocaleString('en-IN')} {t('each')}
                 </div>
               </div>
             </div>
@@ -652,7 +655,7 @@ const CartItem = memo(({ item, onQuantityChange, onRemoveItem, onAddToWishlist, 
                 ) : (
                   <FiTrash2 className="mr-2" />
                 )}
-                Remove
+                {t('Remove')}
               </button>
             </div>
           </div>
@@ -664,6 +667,7 @@ const CartItem = memo(({ item, onQuantityChange, onRemoveItem, onAddToWishlist, 
 
 // Order Summary Component
 const OrderSummary = memo(({ total, itemCount, onCheckout, loading, onClearCart }) => {
+  const { t } = useLanguage();
   const subtotal = total * 0.9; // Remove GST for calculation
   const gst = total * 0.1;
   const shipping = total >= 999 ? 0 : 99;
@@ -671,20 +675,20 @@ const OrderSummary = memo(({ total, itemCount, onCheckout, loading, onClearCart 
   return (
     <div className="lg:w-1/3">
       <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Order Summary</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('Order Summary')}</h2>
         
         <div className="space-y-4">
           <div className="flex justify-between py-3 border-b">
-            <span className="text-gray-600">Items ({itemCount})</span>
+            <span className="text-gray-600">{t('Items')} ({itemCount})</span>
             <span className="font-semibold">₹{subtotal.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
           </div>
           
           <div className="flex justify-between py-3 border-b">
             <div>
-              <span className="text-gray-600">GST (10%)</span>
+              <span className="text-gray-600">{t('GST (10%)')}</span>
               <div className="text-sm text-green-600 flex items-center">
                 <FiCheckCircle className="mr-1" />
-                Benefit applied
+                {t('Benefit applied')}
               </div>
             </div>
             <span className="font-semibold">₹{gst.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
@@ -692,30 +696,30 @@ const OrderSummary = memo(({ total, itemCount, onCheckout, loading, onClearCart 
           
           <div className="flex justify-between py-3 border-b">
             <div>
-              <span className="text-gray-600">Shipping</span>
+              <span className="text-gray-600">{t('Shipping')}</span>
               {shipping === 0 ? (
                 <div className="text-sm text-green-600 flex items-center">
                   <FiCheckCircle className="mr-1" />
-                  Free Shipping
+                  {t('Free Shipping')}
                 </div>
               ) : (
-                <div className="text-sm text-gray-500">Standard: ₹99</div>
+                <div className="text-sm text-gray-500">{t('Standard: ₹99')}</div>
               )}
             </div>
             <span className="font-semibold">
-              {shipping === 0 ? 'FREE' : `₹${shipping}`}
+              {shipping === 0 ? t('FREE') : `₹${shipping}`}
             </span>
           </div>
           
           <div className="pt-4">
             <div className="flex justify-between items-center text-xl font-bold">
-              <span>Total Amount</span>
+              <span>{t('Total Amount')}</span>
               <span className="text-2xl text-orange-600">
                 ₹{total.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
               </span>
             </div>
             <p className="text-sm text-gray-500 mt-2">
-              Including all taxes and shipping charges
+              {t('Including all taxes and shipping charges')}
             </p>
           </div>
           
@@ -728,10 +732,10 @@ const OrderSummary = memo(({ total, itemCount, onCheckout, loading, onClearCart 
               {loading ? (
                 <div className="flex items-center justify-center">
                   <FiLoader className="w-5 h-5 animate-spin mr-2" />
-                  Processing...
+                  {t('Processing...')}
                 </div>
               ) : (
-                'Proceed to Checkout'
+                t('Proceed to Checkout')
               )}
             </button>
             
@@ -741,18 +745,18 @@ const OrderSummary = memo(({ total, itemCount, onCheckout, loading, onClearCart 
                 disabled={loading}
                 className="w-full text-red-600 hover:text-red-700 hover:bg-red-50 font-medium transition-colors duration-200 px-4 py-3 rounded-lg border border-red-200 disabled:opacity-50"
               >
-                Clear Entire Cart
+                {t('Clear Entire Cart')}
               </button>
             )}
           </div>
 
           {/* Payment Methods */}
           <div className="pt-4 border-t mt-4">
-            <h3 className="text-sm font-semibold text-gray-700 mb-2">We Accept</h3>
+            <h3 className="text-sm font-semibold text-gray-700 mb-2">{t('We Accept')}</h3>
             <div className="flex items-center gap-3">
               <FiCreditCard className="text-gray-400" />
               <FiTruck className="text-gray-400" />
-              <span className="text-xs text-gray-500">Secure Payment</span>
+              <span className="text-xs text-gray-500">{t('Secure Payment')}</span>
             </div>
           </div>
         </div>
@@ -763,6 +767,7 @@ const OrderSummary = memo(({ total, itemCount, onCheckout, loading, onClearCart 
 
 // Main Cart Component
 const Cart = () => {
+  const { t } = useLanguage();
   const { 
     cart = [], 
     removeFromCart, 
@@ -810,36 +815,36 @@ const Cart = () => {
       setUpdatingId(id);
       try {
         const updated = await updateQuantity(id, newQuantity, type);
-        if (updated) toast.success('Quantity updated');
+        if (updated) toast.success(t('Quantity updated'));
       } catch (error) {
-        toast.error('Failed to update quantity');
+        toast.error(t('Failed to update quantity'));
       } finally {
         setUpdatingId(null);
       }
     }
-  }, [cart, updateQuantity]);
+  }, [cart, updateQuantity, t]);
 
   // Remove item handler
   const handleRemoveItem = useCallback(async (id, type) => {
     try {
       await removeFromCart(id, type);
-      toast.success('Item removed from cart');
+      toast.success(t('Item removed from cart'));
     } catch (error) {
-      toast.error('Failed to remove item');
+      toast.error(t('Failed to remove item'));
     }
-  }, [removeFromCart]);
+  }, [removeFromCart, t]);
 
   // Clear cart handler
   const handleClearCart = useCallback(async () => {
-    if (window.confirm('Are you sure you want to clear your entire cart?')) {
+    if (window.confirm(t('Are you sure you want to clear your entire cart?'))) {
       try {
         await clearCart();
-        toast.success('Cart cleared');
+        toast.success(t('Cart cleared'));
       } catch (error) {
-        toast.error('Failed to clear cart');
+        toast.error(t('Failed to clear cart'));
       }
     }
-  }, [clearCart]);
+  }, [clearCart, t]);
 
   // Add to wishlist handler
   const handleAddToWishlist = useCallback(async (item) => {
@@ -853,27 +858,27 @@ const Cart = () => {
       });
       
       await handleRemoveItem(item.id, item.type);
-      toast.success('Item moved to wishlist!');
+      toast.success(t('Item moved to wishlist!'));
     } catch (error) {
-      toast.error('Failed to move to wishlist');
+      toast.error(t('Failed to move to wishlist'));
     }
-  }, [addToWishlist, handleRemoveItem]);
+  }, [addToWishlist, handleRemoveItem, t]);
 
   // Checkout handler
   const handleCheckout = useCallback(() => {
     if (!isAuthenticated) {
-      toast.error('Please login to proceed to checkout');
+      toast.error(t('Please login to proceed to checkout'));
       navigate('/login', { state: { from: '/cart' } });
       return;
     }
     
     if (!Array.isArray(cart) || cart.length === 0) {
-      toast.error('Your cart is empty. Add some items first!');
+      toast.error(t('Your cart is empty. Add some items first!'));
       return;
     }
     
     navigate('/checkout');
-  }, [cart, navigate, isAuthenticated]);
+  }, [cart, navigate, isAuthenticated, t]);
 
   // Loading state
   if (cartLoading) {
@@ -901,13 +906,13 @@ const Cart = () => {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Shopping Cart</h1>
+            <h1 className="text-3xl font-bold text-gray-900">{t('Shopping Cart')}</h1>
             <p className="text-gray-600 mt-1">
-              {itemCount} item{itemCount !== 1 ? 's' : ''} in cart
+              {itemCount} {t('items')} {t('in cart')}
               {syncing && (
                 <span className="ml-2 text-sm text-orange-600 flex items-center">
                   <FiLoader className="w-3 h-3 animate-spin mr-1" />
-                  Syncing...
+                  {t('Syncing...')}
                 </span>
               )}
             </p>
@@ -918,7 +923,7 @@ const Cart = () => {
               className="inline-flex items-center text-orange-600 hover:text-orange-700 font-medium transition-colors duration-200 px-4 py-2 hover:bg-orange-50 rounded-lg"
             >
               <FiArrowLeft className="mr-2" />
-              Continue Shopping
+              {t('Continue shopping')}
             </Link>
           </div>
         </div>
@@ -954,19 +959,19 @@ const Cart = () => {
         <div className="mt-8 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-2xl shadow-xl p-6">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="mb-4 md:mb-0 md:mr-6">
-              <h2 className="text-xl font-bold mb-2">Need Help?</h2>
-              <p className="text-orange-100 text-sm">We're here to help you with your order</p>
+              <h2 className="text-xl font-bold mb-2">{t('Need Help?')}</h2>
+              <p className="text-orange-100 text-sm">{t("We're here to help you with your order")}</p>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold mb-1">+91 85069 11777</div>
-              <p className="text-orange-100 text-sm">Call or WhatsApp</p>
+              <p className="text-orange-100 text-sm">{t('Call or WhatsApp')}</p>
               <a
                 href="https://wa.me/918506911777"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block mt-2 bg-white text-orange-600 px-4 py-2 rounded-lg font-medium hover:bg-orange-50 transition-colors duration-200 text-sm"
               >
-                WhatsApp Support
+                {t('WhatsApp Support')}
               </a>
             </div>
           </div>

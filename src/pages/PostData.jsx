@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from "../contexts/AuthContext.jsx";
+import { useLanguage } from '../contexts/LanguageContext';
 import axios from 'axios';
 import { API_BASE_URL } from '../services/api';
 import '../styles/AdminTheme.css';
@@ -59,6 +60,7 @@ import {
 
 const PostData = ({ initialSection = 'dashboard' }) => {
   const { user: authUser, logout: authLogout, getAuthToken } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   // Refs
   const sidebarRef = useRef(null);
@@ -1065,7 +1067,7 @@ const PostData = ({ initialSection = 'dashboard' }) => {
                   <span className={`text-lg ${sidebarOpen ? 'mr-3' : ''}`}>
                     {item.icon}
                   </span>
-                  {sidebarOpen && <span>{item.label}</span>}
+                  {sidebarOpen && <span>{t(item.label)}</span>}
                 </button>
               );
             })}
@@ -1075,23 +1077,23 @@ const PostData = ({ initialSection = 'dashboard' }) => {
           {sidebarOpen && (
             <div className="mt-8 px-4 pb-8">
               <h3 className={`text-xs font-semibold ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'} uppercase tracking-wider mb-3`}>
-                Quick Stats
+                {t('Quick Stats')}
               </h3>
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
-                  <span className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>Products</span>
+                  <span className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>{t('Products')}</span>
                   <span className={`font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>{dashboardStats.totalProducts}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                  <span className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>Orders</span>
+                  <span className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>{t('Orders')}</span>
                   <span className={`font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>{dashboardStats.activeOrders}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                  <span className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>Revenue</span>
+                  <span className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>{t('Revenue')}</span>
                   <span className={`font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>₹{dashboardStats.totalRevenue.toLocaleString()}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                  <span className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>Users</span>
+                  <span className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>{t('Users')}</span>
                   <span className={`font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>{dashboardStats.activeUsers}</span>
                 </div>
               </div>
@@ -1108,7 +1110,7 @@ const PostData = ({ initialSection = 'dashboard' }) => {
             } py-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors`}
           >
             <FiLogOut className="text-lg" />
-            {sidebarOpen && <span className="ml-3">Logout</span>}
+            {sidebarOpen && <span className="ml-3">{t('Logout')}</span>}
           </button>
         </div>
       </aside>
@@ -1127,12 +1129,12 @@ const PostData = ({ initialSection = 'dashboard' }) => {
                 <FiMenu className="text-xl" />
               </button>
               <h1 className={`text-xl font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-800'} capitalize`}>
-                {activeSection === 'add' ? 'Add Product' : 
-                 activeSection === 'chatsupport' ? 'Chat Support' :
-                 activeSection === 'inquiries' ? 'Enquiry Management' :
-                 activeSection === 'workshop-manager' ? 'Workshop Manager' :
-                 activeSection === 'homepage' ? 'Homepage Management' :
-                 `${activeSection.charAt(0).toUpperCase() + activeSection.slice(1)}`}
+                {activeSection === 'add' ? t('Add Product') : 
+                 activeSection === 'chatsupport' ? t('Chat Support') :
+                 activeSection === 'inquiries' ? t('Enquiry Management') :
+                 activeSection === 'workshop-manager' ? t('Workshop Manager') :
+                 activeSection === 'homepage' ? t('Homepage Management') :
+                 t(`${activeSection.charAt(0).toUpperCase() + activeSection.slice(1)}`)}
               </h1>
             </div>
 
@@ -1145,7 +1147,7 @@ const PostData = ({ initialSection = 'dashboard' }) => {
                     key={index}
                     onClick={action.action}
                     className={`p-2 rounded-lg ${theme === 'dark' ? 'hover:bg-gray-700 text-gray-300' : 'hover:bg-gray-100 text-gray-600'}`}
-                    title={action.label}
+                    title={t(action.label)}
                   >
                     {action.icon}
                   </button>
@@ -1158,14 +1160,14 @@ const PostData = ({ initialSection = 'dashboard' }) => {
                 className={`hidden md:flex items-center space-x-2 px-4 py-2 rounded-lg ${theme === 'dark' ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-blue-50 hover:bg-blue-100 text-blue-600'}`}
               >
                 <FiExternalLink className="w-4 h-4" />
-                <span>View Store</span>
+                <span>{t('View Store')}</span>
               </button>
 
               {/* Theme Toggle Button */}
               <button
                 onClick={toggleTheme}
                 className={`p-2 rounded-full ${theme === 'dark' ? 'hover:bg-gray-700 text-yellow-300' : 'hover:bg-gray-100 text-gray-600'}`}
-                title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                title={t(theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode')}
               >
                 {theme === 'dark' ? <FiSun className="w-5 h-5" /> : <FiMoon className="w-5 h-5" />}
               </button>
@@ -1189,12 +1191,12 @@ const PostData = ({ initialSection = 'dashboard' }) => {
                   <div className={`absolute right-0 mt-2 w-80 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-lg shadow-xl border z-50`}>
                     <div className={`p-4 ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'} border-b`}>
                       <div className="flex items-center justify-between">
-                        <h3 className={`font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>Notifications</h3>
+                        <h3 className={`font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>{t('Notifications')}</h3>
                         <button
                           onClick={markAllNotificationsAsRead}
                           className="text-sm text-blue-600 hover:text-blue-800"
                         >
-                          Mark all as read
+                          {t('Mark all as read')}
                         </button>
                       </div>
                     </div>
@@ -1273,7 +1275,7 @@ const PostData = ({ initialSection = 'dashboard' }) => {
                         </span>
                         {user.emailVerified && (
                           <span className="ml-2 text-xs px-2 py-1 rounded-full bg-green-100 text-green-600">
-                            Verified
+                            {t('Verified')}
                           </span>
                         )}
                       </div>
@@ -1288,7 +1290,7 @@ const PostData = ({ initialSection = 'dashboard' }) => {
                       >
                         <div className="flex items-center">
                           <FiSettings className="w-4 h-4 mr-3" />
-                          Settings
+                          {t('Settings')}
                         </div>
                       </button>
                       <button
@@ -1300,7 +1302,7 @@ const PostData = ({ initialSection = 'dashboard' }) => {
                       >
                         <div className="flex items-center">
                           <FiRefreshCw className="w-4 h-4 mr-3" />
-                          Refresh Profile
+                          {t('Refresh Profile')}
                         </div>
                       </button>
                       <button
@@ -1309,7 +1311,7 @@ const PostData = ({ initialSection = 'dashboard' }) => {
                       >
                         <div className="flex items-center">
                           <FiTrendingUp className="w-4 h-4 mr-3" />
-                          Refresh Data
+                          {t('Refresh Data')}
                         </div>
                       </button>
                     </div>
@@ -1319,7 +1321,7 @@ const PostData = ({ initialSection = 'dashboard' }) => {
                         className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg flex items-center"
                       >
                         <FiLogOut className="w-4 h-4 mr-3" />
-                        Logout
+                        {t('Logout')}
                       </button>
                     </div>
                   </div>

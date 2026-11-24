@@ -75,8 +75,6 @@ export const clearAuth = () => { localStorage.removeItem('token'); localStorage.
 export const AuthService = {
   register: (data) => api.post('/auth/register', data),
   login: (data) => api.post('/auth/login', data),
-  verifyEmail: (data) => api.post('/auth/verify-email', data),
-  resendOTP: (data) => api.post('/auth/resend-otp', data),
   verifyToken: (data) => api.post('/auth/verify-token', data),
   forgotPassword: (data) => api.post('/auth/forgot-password', data),
   resetPassword: (data) => api.post('/auth/reset-password', data),
